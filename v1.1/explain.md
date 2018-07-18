@@ -238,7 +238,7 @@ The `VERBOSE` option implies the `EXPRS`, `METADATA`, and `QUALIFY` options.
 The `TYPES` mode includes the types of the values used in the query plan, as well as implying the `METADATA` and `EXPRS` options.
 
 ~~~ sql
-> EXPLAIN (TYPES) SELECT * FROM kv WHERE v > 3 order by v;
+> EXPLAIN (TYPES) SELECT * FROM kv WHERE v > 3 ORDER BY v;
 ~~~
 ~~~
 +-------+------+--------+-----------------------------+----------------+--------------+

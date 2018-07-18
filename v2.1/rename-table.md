@@ -49,7 +49,7 @@ The user must have the `DROP` [privilege](privileges.html) on the table and the 
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> ALTER TABLE db1.table1 RENAME TO db1.tablea
+> ALTER TABLE db1.table1 RENAME TO db1.tablea;
 ~~~
 
 {% include copy-clipboard.html %}
@@ -120,7 +120,7 @@ To move a table from one database to another, use the above syntax but specify t
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> ALTER TABLE db1.tablea RENAME TO db2.tablea
+> ALTER TABLE db1.tablea RENAME TO db2.tablea;
 ~~~
 
 {% include copy-clipboard.html %}

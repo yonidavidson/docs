@@ -87,7 +87,7 @@ Currently CockroachDB only supports the generator function
 For example:
 
 ~~~sql
-> SELECT * FROM generate_series(1, 3)
+> SELECT * FROM generate_series(1, 3);
 ~~~
 ~~~
 +-----------------+
@@ -113,8 +113,8 @@ Syntax:
 For example:
 
 ~~~sql
-> SELECT c+2                          FROM (SELECT COUNT(*) AS c FROM users);
-> SELECT *                            FROM (VALUES(1), (2), (3));
+> SELECT c + 2 FROM (SELECT count(*) AS c FROM users);
+> SELECT * FROM (VALUES (1), (2), (3));
 > SELECT firstname || ' ' || lastname FROM (TABLE employees);
 ~~~
 
@@ -135,8 +135,8 @@ In the second form, the columns are also renamed.
 For example:
 
 ~~~sql
-> SELECT c.x FROM (SELECT COUNT(*) AS x FROM users) AS c;
-> SELECT c.x FROM (SELECT COUNT(*) FROM users) AS c(x);
+> SELECT c.x FROM (SELECT count(*) AS x FROM users) AS c;
+> SELECT c.x FROM (SELECT count(*) FROM users) AS c (x);
 ~~~
 
 ## Join Expressions
@@ -210,9 +210,19 @@ auto-generated employee ID, without requiring a round-trip with the SQL
 client:
 
 ~~~sql
-> INSERT INTO management(manager, reportee)
-    VALUES ((SELECT id FROM employee WHERE name = 'Diana'),
-            (SELECT id FROM [INSERT INTO employee(name) VALUES ('Albert') RETURNING id]));
+> INSERT
+INTO
+  management (manager, reportee)
+VALUES
+  (
+    (SELECT id FROM employee WHERE name = 'Diana'),
+    (
+      SELECT
+        id
+      FROM
+        [INSERT INTO employee (name) VALUES ('Albert') RETURNING id]
+    )
+  );
 ~~~
 
 ## Ordinality Annotation
@@ -229,7 +239,7 @@ an extra "Ordinality" column that enumerates every row in the data source.
 For example:
 
 ~~~sql
-> SELECT * FROM (VALUES('a'),('b'),('c'));
+> SELECT * FROM (VALUES ('a'), ('b'), ('c'));
 ~~~
 ~~~
 +---------+

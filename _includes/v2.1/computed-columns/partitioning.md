@@ -22,14 +22,17 @@ Then, insert a few rows of data:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> INSERT INTO user_locations (name, country) VALUES
-    ('Leonard McCoy', 'us'),
-    ('Uhura', 'nz'),
-    ('Spock', 'ca'),
-    ('James Kirk', 'us'),
-    ('Scotty', 'mx'),
-    ('Hikaru Sulu', 'us'),
-    ('Pavel Chekov', 'au');
+> INSERT
+INTO
+  user_locations (name, country)
+VALUES
+  ('Leonard McCoy', 'us'),
+  ('Uhura', 'nz'),
+  ('Spock', 'ca'),
+  ('James Kirk', 'us'),
+  ('Scotty', 'mx'),
+  ('Hikaru Sulu', 'us'),
+  ('Pavel Chekov', 'au');
 ~~~
 
 {% include copy-clipboard.html %}

@@ -78,7 +78,11 @@ The size of a `DECIMAL` value is variable, starting at 9 bytes. It's recommended
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> INSERT INTO decimals VALUES (1.01234567890123456789, 1.01234567890123456789, 1.01234567890123456789);
+> INSERT
+INTO
+  decimals
+VALUES
+  (1.01234567890123456789, 1.01234567890123456789, 1.01234567890123456789);
 ~~~
 
 {% include copy-clipboard.html %}

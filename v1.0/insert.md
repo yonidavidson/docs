@@ -107,7 +107,15 @@ If you don't list column names, the statement will use the columns of the table 
 +--------+---------+-------+---------+
 ~~~
 ~~~ sql
-> INSERT INTO accounts (id, balance) SELECT number, amount FROM other_accounts WHERE id > 4;
+> INSERT
+INTO
+  accounts (id, balance)
+SELECT
+  number, amount
+FROM
+  other_accounts
+WHERE
+  id > 4;
 
 > SELECT * FROM accounts;
 ~~~
@@ -131,7 +139,7 @@ If you don't list column names, the statement will use the columns of the table 
 > INSERT INTO accounts (id) VALUES (8);
 > INSERT INTO accounts (id, balance) VALUES (9, DEFAULT);
 
-> SELECT * FROM accounts WHERE id in (8, 9);
+> SELECT * FROM accounts WHERE id IN (8, 9);
 ~~~
 ~~~
 +----+---------+
@@ -182,9 +190,13 @@ In this example, the `RETURNING` clause returns the `id` values of the rows inse
 <div class="filter-content" markdown="1" data-scope="shell">
 <p></p>
 ~~~ sql
-> INSERT INTO accounts (id, balance)
-  VALUES (DEFAULT, 1000), (DEFAULT, 250)
-  RETURNING id;
+> INSERT
+INTO
+  accounts (id, balance)
+VALUES
+  (DEFAULT, 1000), (DEFAULT, 250)
+RETURNING
+  id;
 ~~~
 
 ~~~
@@ -421,10 +433,15 @@ IDs:
 When a uniqueness conflict is detected, CockroachDB stores the row in a temporary table called <code>excluded</code>. This example demonstrates how you use the columns in the temporary <code>excluded</code> table to apply updates on conflict:
 
 ~~~ sql
-> INSERT INTO accounts (id, balance)
-    VALUES (8, 500.50)
-    ON CONFLICT (id)
-    DO UPDATE SET balance = excluded.balance;
+> INSERT
+INTO
+  accounts (id, balance)
+VALUES
+  (8, 500.50)
+ON CONFLICT
+  (id)
+DO
+  UPDATE SET balance = excluded.balance;
 
 > SELECT * FROM accounts WHERE id = 8;
 ~~~
@@ -460,10 +477,15 @@ pq: duplicate key value (id)=(8) violates unique constraint "primary"
 In this example, we use `ON CONFLICT DO NOTHING` to ignore the uniqueness error and prevent the affected row from being updated:
 
 ~~~ sql
-> INSERT INTO accounts (id, balance)
-    VALUES (8, 125.50)
-    ON CONFLICT (id)
-    DO NOTHING;
+> INSERT
+INTO
+  accounts (id, balance)
+VALUES
+  (8, 125.50)
+ON CONFLICT
+  (id)
+DO
+  NOTHING;
 
 > SELECT * FROM accounts WHERE id = 8;
 ~~~
@@ -478,12 +500,17 @@ In this example, we use `ON CONFLICT DO NOTHING` to ignore the uniqueness error 
 In this example, `ON CONFLICT DO NOTHING` prevents the first row from updating while allowing the second row to be inserted:
 
 ~~~ sql
-> INSERT INTO accounts (id, balance)
-    VALUES (8, 125.50), (10, 450)
-    ON CONFLICT (id)
-    DO NOTHING;
+> INSERT
+INTO
+  accounts (id, balance)
+VALUES
+  (8, 125.50), (10, 450)
+ON CONFLICT
+  (id)
+DO
+  NOTHING;
 
-> SELECT * FROM accounts WHERE id in (8, 10);
+> SELECT * FROM accounts WHERE id IN (8, 10);
 ~~~
 ~~~
 +----+---------+

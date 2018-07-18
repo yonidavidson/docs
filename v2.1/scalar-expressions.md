@@ -288,7 +288,10 @@ For example:
 
 {% include copy-clipboard.html %}
 ~~~sql
-> SELECT 'monday' LIKE '%day' AS a, 'tuesday' LIKE 'tue_day' AS b, 'wednesday' ILIKE 'W%' AS c;
+> SELECT
+  'monday' LIKE '%day' AS a,
+  'tuesday' LIKE 'tue_day' AS b,
+  'wednesday' ILIKE 'W%' AS c;
 ~~~
 
 ~~~
@@ -331,7 +334,10 @@ For example:
 
 {% include copy-clipboard.html %}
 ~~~sql
-> SELECT 'monday' ~ 'onday' AS a, 'tuEsday' ~ 't[uU][eE]sday' AS b, 'wednesday' ~* 'W.*y' AS c;
+> SELECT
+  'monday' ~ 'onday' AS a,
+  'tuEsday' ~ 't[uU][eE]sday' AS b,
+  'wednesday' ~* 'W.*y' AS c;
 ~~~
 
 ~~~
@@ -371,7 +377,10 @@ For example:
 
 {% include copy-clipboard.html %}
 ~~~sql
-> SELECT 'monday' SIMILAR TO '_onday' AS a, 'tuEsday' SIMILAR TO 't[uU][eE]sday' AS b, 'wednesday' SIMILAR TO 'w%y' AS c;
+> SELECT
+  'monday' SIMILAR TO '_onday' AS a,
+  'tuEsday' SIMILAR TO 't[uU][eE]sday' AS b,
+  'wednesday' SIMILAR TO 'w%y' AS c;
 ~~~
 
 ~~~
@@ -676,7 +685,7 @@ For example:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT ARRAY[1,2,3] AS a;
+> SELECT ARRAY[1, 2, 3] AS a;
 ~~~
 
 ~~~
@@ -696,7 +705,7 @@ specified explicitly using a type annotation. For example:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT ARRAY[]:::int[];
+> SELECT ARRAY[]:::INT[];
 ~~~
 
 {{site.data.alerts.callout_success}}To convert the results of a subquery to an array, use <a href="#conversion-of-subquery-results-to-an-array"><code>ARRAY(...)</code></a> instead.{{site.data.alerts.end}}
@@ -820,7 +829,7 @@ For example, the following query returns `TRUE` if there are more rows in table 
 
 {% include copy-clipboard.html %}
 ~~~sql
-> SELECT (SELECT COUNT(*) FROM users) > (SELECT COUNT(*) FROM admins);
+> SELECT (SELECT count(*) FROM users) > (SELECT count(*) FROM admins);
 ~~~
 
 {{site.data.alerts.callout_info}}See <a href="subqueries.html">Subqueries</a> for more details and performance best practices.{{site.data.alerts.end}}

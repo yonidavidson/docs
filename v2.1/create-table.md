@@ -88,10 +88,7 @@ In CockroachDB, every table requires a [primary key](primary-key.html). If one i
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE TABLE logon (
-    user_id INT,
-    logon_date DATE
-);
+> CREATE TABLE logon (user_id INT, logon_date DATE);
 ~~~
 
 {% include copy-clipboard.html %}
@@ -130,9 +127,9 @@ In this example, we create a table with three columns. One column is the [primar
 {% include copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE logoff (
-    user_id INT PRIMARY KEY,
-    user_email STRING UNIQUE,
-    logoff_date DATE
+  user_id INT PRIMARY KEY,
+  user_email STRING UNIQUE,
+  logoff_date DATE
 );
 ~~~
 
@@ -249,18 +246,15 @@ In this example, we use `ON DELETE CASCADE` (i.e., when row referenced by a fore
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE TABLE customers (
-    id INT PRIMARY KEY,
-    name STRING
-  );
+> CREATE TABLE customers (id INT PRIMARY KEY, name STRING);
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE orders (
-    id INT PRIMARY KEY,
-    customer_id INT REFERENCES customers(id) ON DELETE CASCADE
-  );
+  id INT PRIMARY KEY,
+  customer_id INT REFERENCES customers (id) ON DELETE CASCADE
+);
 ~~~
 
 {% include copy-clipboard.html %}
@@ -289,7 +283,7 @@ In this example, we use `ON DELETE CASCADE` (i.e., when row referenced by a fore
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> INSERT INTO orders VALUES (1,1);
+> INSERT INTO orders VALUES (1, 1);
 ~~~
 
 {% include copy-clipboard.html %}
@@ -331,7 +325,7 @@ You can use the [`CREATE TABLE AS`](create-table-as.html) statement to create a 
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE TABLE customers_ny AS SELECT * FROM customers WHERE state = 'NY';
+> CREATE TABLE customers_ny  AS SELECT * FROM customers WHERE state = 'NY';
 ~~~
 
 {% include copy-clipboard.html %}

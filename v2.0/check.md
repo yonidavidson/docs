@@ -50,11 +50,11 @@ The `CHECK` [constraint](constraints.html) specifies that values for the column 
 
 ~~~ sql
 > CREATE TABLE inventories (
-    product_id        INT NOT NULL,
-    warehouse_id      INT NOT NULL,
-    quantity_on_hand  INT NOT NULL CHECK (quantity_on_hand > 0),
-    PRIMARY KEY (product_id, warehouse_id)
-  );
+  product_id INT NOT NULL,
+  warehouse_id INT NOT NULL,
+  quantity_on_hand INT NOT NULL CHECK (quantity_on_hand > 0),
+  PRIMARY KEY (product_id, warehouse_id)
+);
 ~~~
 
 ### Table Level
@@ -89,13 +89,17 @@ The `CHECK` [constraint](constraints.html) specifies that values for the column 
 
 ~~~ sql
 > CREATE TABLE inventories (
-    product_id        INT NOT NULL,
-    warehouse_id      INT NOT NULL,
-    quantity_on_hand  INT NOT NULL CHECK (quantity_on_hand > 0),
-    PRIMARY KEY (product_id, warehouse_id)
-  );
+  product_id INT NOT NULL,
+  warehouse_id INT NOT NULL,
+  quantity_on_hand INT NOT NULL CHECK (quantity_on_hand > 0),
+  PRIMARY KEY (product_id, warehouse_id)
+);
 
-> INSERT INTO inventories (product_id, warehouse_id, quantity_on_hand) VALUES (1, 2, 0);
+> INSERT
+INTO
+  inventories (product_id, warehouse_id, quantity_on_hand)
+VALUES
+  (1, 2, 0);
 ~~~
 ~~~
 pq: failed to satisfy CHECK constraint (quantity_on_hand > 0)

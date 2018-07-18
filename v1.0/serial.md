@@ -59,8 +59,12 @@ The [`SHOW COLUMNS`](show-columns.html) statement shows that the `SERIAL` type i
 When we insert rows without values in column `a` and display the new rows, we see that each row has defaulted to a unique value in column `a`.
 
 ~~~ sql
-> INSERT INTO serial (b,c) VALUES ('red', true), ('yellow', false), ('pink', true);
-> INSERT INTO serial (a,b,c) VALUES (123, 'white', false);
+> INSERT
+INTO
+  serial (b, c)
+VALUES
+  ('red', true), ('yellow', false), ('pink', true);
+> INSERT INTO serial (a, b, c) VALUES (123, 'white', false);
 > SELECT * FROM serial;
 ~~~
 
@@ -99,7 +103,7 @@ To experience this for yourself, run through the following example in PostgreSQL
 3. View the rows created.
 
     ~~~ sql
-    > SELECT * from increment;
+    > SELECT * FROM increment;
     ~~~
     ~~~
     +---+

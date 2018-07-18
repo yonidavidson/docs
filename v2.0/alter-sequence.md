@@ -91,7 +91,11 @@ In this example, we're going to change the next value of the example sequence (`
 Let's add another record to the table to check that the new record adheres to the new next value.
 
 ~~~ sql
-> INSERT INTO customer_list (customer, address) VALUES ('Lola', '333 Schermerhorn');
+> INSERT
+INTO
+  customer_list (customer, address)
+VALUES
+  ('Lola', '333 Schermerhorn');
 ~~~
 ~~~
 +----+----------+--------------------+

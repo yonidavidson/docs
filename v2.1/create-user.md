@@ -60,7 +60,7 @@ Usernames are case-insensitive; must start with either a letter or underscore; m
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE USER jpointsman;
+> CREATE USER 'jpointsman';
 ~~~
 
 After creating users, you must:
@@ -72,7 +72,7 @@ After creating users, you must:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE USER jpointsman WITH PASSWORD 'Q7gc8rEdS';
+> CREATE USER 'jpointsman' WITH PASSWORD 'Q7gc8rEdS';
 ~~~
 
 Password creation is supported only in secure clusters for non-`root` users. The `root` user must authenticate with a client certificate and key.

@@ -29,7 +29,7 @@ A `UUID` value is 128 bits in width, but the total storage size is likely to be 
 #### Create a table with `UUID` in standard [RFC4122](http://www.ietf.org/rfc/rfc4122.txt)-specified format
 
 ~~~ sql
-> CREATE TABLE v (token uuid);
+> CREATE TABLE v (token UUID);
 
 > INSERT INTO v VALUES ('63616665-6630-3064-6465-616462656562');
 

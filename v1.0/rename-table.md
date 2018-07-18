@@ -42,7 +42,7 @@ The user must have the `DROP` [privilege](privileges.html) on the table and the 
 +--------+
 ~~~
 ~~~ sql
-> ALTER TABLE db1.table1 RENAME TO db1.tablea
+> ALTER TABLE db1.table1 RENAME TO db1.tablea;
 ~~~
 ~~~ sql
 > SHOW TABLES FROM db1;
@@ -99,7 +99,7 @@ To move a table from one database to another, use the above syntax but specify t
 +-------+
 ~~~
 ~~~ sql
-> ALTER TABLE db1.tablea RENAME TO db2.tablea
+> ALTER TABLE db1.tablea RENAME TO db2.tablea;
 ~~~
 ~~~ sql
 > SHOW TABLES FROM db1;

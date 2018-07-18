@@ -117,7 +117,7 @@ we can split it at its primary key like so:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-ALTER TABLE t SPLIT AT VALUES (5,1), (5,2), (5,3);
+ALTER TABLE t SPLIT AT VALUES (5, 1), (5, 2), (5, 3);
 ~~~
 
 ~~~

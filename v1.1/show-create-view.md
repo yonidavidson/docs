@@ -50,9 +50,12 @@ Field | Description
 To get just a view's `SELECT` statement, you can query the `views` table in the built-in `information_schema` database and filter on the view name: 
 
 ~~~ sql
-> SELECT view_definition 
-  FROM information_schema.views 
-  WHERE table_name = 'user_accounts';
+> SELECT
+  view_definition
+FROM
+  information_schema.views
+WHERE
+  table_name = 'user_accounts';
 ~~~
 
 ~~~

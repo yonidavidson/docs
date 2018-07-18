@@ -40,7 +40,7 @@ Parameter | Description
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> ALTER USER carl WITH PASSWORD 'ilov3beefjerky';
+> ALTER USER 'carl' WITH PASSWORD 'ilov3beefjerky';
 ~~~
 ~~~
 ALTER USER 1
@@ -52,7 +52,7 @@ The following statement changes the password to `ilov3beefjerky`, as above:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> ALTER USER carl WITH PASSWORD ilov3beefjerky;
+> ALTER USER 'carl' WITH PASSWORD 'ilov3beefjerky';
 ~~~
 
 This is equivalent to the example in the previous section because the password contains only lowercase characters.
@@ -61,14 +61,14 @@ In contrast, the following statement changes the password to `thereisnotomorrow`
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> ALTER USER carl WITH PASSWORD ThereIsNoTomorrow;
+> ALTER USER 'carl' WITH PASSWORD 'thereisnotomorrow';
 ~~~
 
 To preserve case in a password specified using identifier syntax, use double quotes:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> ALTER USER carl WITH PASSWORD "ThereIsNoTomorrow";
+> ALTER USER 'carl' WITH PASSWORD 'ThereIsNoTomorrow';
 ~~~
 
 ## See Also

@@ -47,12 +47,12 @@ In this example, first check a user's privileges. Then, revoke the user's privil
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> REVOKE CREATE,INSERT,UPDATE ON test.customers FROM mroach;
+> REVOKE CREATE, INSERT, UPDATE ON TABLE test.customers FROM mroach;
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> DROP USER mroach;
+> DROP USER 'mroach';
 ~~~
 
 ## See Also

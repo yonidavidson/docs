@@ -32,11 +32,13 @@ Parameter | Description
 Let's say you're using our [sample `startrek` database](generate-cockroachdb-resources.html#generate-example-data), which contains two tables, `episodes` and `quotes`. There's a foreign key constraint between the `episodes.id` column and the `quotes.episode` column. To count the number of famous quotes per season, you could run the following join:
 
 ~~~ sql
-> SELECT startrek.episodes.season, count(*)
-  FROM startrek.quotes
-  JOIN startrek.episodes
-  ON startrek.quotes.episode = startrek.episodes.id
-  GROUP BY startrek.episodes.season;
+> SELECT
+  startrek.episodes.season, count(*)
+FROM
+  startrek.quotes
+  JOIN startrek.episodes ON startrek.quotes.episode = startrek.episodes.id
+GROUP BY
+  startrek.episodes.season;
 ~~~
 
 ~~~

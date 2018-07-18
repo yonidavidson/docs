@@ -107,7 +107,7 @@ The following demonstrates how to use quoting to use values containing spaces:
 The following demonstrates how to assign a list of values:
 
 ~~~ sql
-> SET search_path = pg_catalog,public;
+> SET search_path = pg_catalog, public;
 > SHOW search_path;
 ~~~
 

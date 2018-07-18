@@ -114,10 +114,7 @@ This example creates an interleaved hierarchy between `customers`, `orders`, and
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE TABLE customers (
-    id INT PRIMARY KEY,
-    name STRING(50)
-  );
+> CREATE TABLE customers (id INT PRIMARY KEY, name STRING(50));
 ~~~
 
 {% include copy-clipboard.html %}
@@ -151,18 +148,16 @@ It can be easier to understand what interleaving tables does by seeing what it l
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> INSERT INTO customers (id, name) VALUES
-    (1, 'Ha-Yun'),
-    (2, 'Emanuela');
+> INSERT INTO customers (id, name) VALUES (1, 'Ha-Yun'), (2, 'Emanuela');
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> INSERT INTO orders (customer, id, total) VALUES
-    (1, 1000, 100.00),
-    (2, 1001, 90.00),
-    (1, 1002, 80.00),
-    (2, 1003, 70.00);
+> INSERT
+INTO
+  orders (customer, id, total)
+VALUES
+  (1, 1000, 100.00), (2, 1001, 90.00), (1, 1002, 80.00), (2, 1003, 70.00);
 ~~~
 
 Using an illustrative format of the key-value store (keys are represented in colors; values are represented by `-> value`), the data would be written like this:

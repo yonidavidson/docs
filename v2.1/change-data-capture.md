@@ -130,16 +130,12 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > CREATE TABLE office_dogs (
-         id INT PRIMARY KEY,
-         name STRING);
+    > CREATE TABLE office_dogs (id INT PRIMARY KEY, name STRING);
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > INSERT INTO office_dogs VALUES
-       (1, 'Petee'),
-       (2, 'Carl');
+    > INSERT INTO office_dogs VALUES (1, 'Petee'), (2, 'Carl');
     ~~~
 
     {% include copy-clipboard.html %}

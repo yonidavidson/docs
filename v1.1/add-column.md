@@ -97,7 +97,7 @@ The user must have the `CREATE` [privilege](privileges.html) on the table.
 ### Add a Non-Null Column with Unique Values
 
 ~~~ sql
-> ALTER TABLE accounts ADD COLUMN cust_number DECIMAL UNIQUE NOT NULL;
+> ALTER TABLE accounts ADD COLUMN cust_number DECIMAL NOT NULL UNIQUE;
 ~~~
 
 ### Add a Column with Collation

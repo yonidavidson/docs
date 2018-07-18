@@ -36,7 +36,7 @@ How you add constraints depends on the number of columns you want to constrain, 
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > CREATE TABLE bar (a INT, b INT, PRIMARY KEY (a,b));
+    > CREATE TABLE bar (a INT, b INT, PRIMARY KEY (a, b));
     ~~~
 
   {{site.data.alerts.callout_info}}The Default Value and Not Null constraints cannot be applied to multiple columns.{{site.data.alerts.end}}

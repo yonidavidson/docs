@@ -134,7 +134,7 @@ negative numeric offset from UTC (e.g., `-7`, `+7`). Also, `DEFAULT`,
 ### Example: Set the Default Time Zone via `SET TIME ZONE`
 
 ~~~ sql
-> SET TIME ZONE 'EST';
+> SET timezone = 'EST';
 > SHOW TIME ZONE;
 ~~~
 ~~~ shell
@@ -146,7 +146,7 @@ negative numeric offset from UTC (e.g., `-7`, `+7`). Also, `DEFAULT`,
 (1 row)
 ~~~
 ~~~ sql
-> SET TIME ZONE DEFAULT;
+> SET timezone = DEFAULT;
 > SHOW TIME ZONE;
 ~~~
 ~~~ shell

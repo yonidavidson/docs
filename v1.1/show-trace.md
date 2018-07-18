@@ -271,7 +271,7 @@ In this example, we use session tracing to show an [automatic transaction retry]
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > SET tracing = cluster;
+    > SET TRACING = cluster;
     ~~~
 
     {% include copy-clipboard.html %}
@@ -303,7 +303,7 @@ In this example, we use session tracing to show an [automatic transaction retry]
 
     {% include copy-clipboard.html %}
 	~~~ sql
-	> SET tracing = off;
+	> SET TRACING = off;
 	~~~
 
     {% include copy-clipboard.html %}

@@ -72,7 +72,7 @@ For example:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE TABLE logoff_copy AS TABLE logoff;
+> CREATE TABLE logoff_copy  AS TABLE logoff;
 ~~~
 
 {% include copy-clipboard.html %}
@@ -104,7 +104,7 @@ For example:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE INDEX logoff_copy_id_idx ON logoff_copy(user_id);
+> CREATE INDEX logoff_copy_id_idx ON logoff_copy (user_id);
 ~~~
 
 {% include copy-clipboard.html %}
@@ -150,7 +150,7 @@ results.
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE TABLE customers_ny AS SELECT * FROM customers WHERE state = 'NY';
+> CREATE TABLE customers_ny  AS SELECT * FROM customers WHERE state = 'NY';
 ~~~
 
 {% include copy-clipboard.html %}
@@ -172,7 +172,8 @@ This statement creates a copy of an existing table but with changed column names
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE TABLE customers_ny (id, first_name) AS SELECT id, name FROM customers WHERE state = 'NY';
+> CREATE TABLE customers_ny (id, first_name) AS
+  SELECT id, name FROM customers WHERE state = 'NY';
 ~~~
 
 {% include copy-clipboard.html %}
@@ -192,7 +193,7 @@ This statement creates a copy of an existing table but with changed column names
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE TABLE tech_states AS VALUES ('CA'), ('NY'), ('WA');
+> CREATE TABLE tech_states  AS VALUES ('CA'), ('NY'), ('WA');
 ~~~
 
 {% include copy-clipboard.html %}
@@ -215,7 +216,7 @@ This statement creates a copy of an existing table but with changed column names
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE TABLE customers_ny_copy AS TABLE customers_ny;
+> CREATE TABLE customers_ny_copy  AS TABLE customers_ny;
 ~~~
 
 {% include copy-clipboard.html %}

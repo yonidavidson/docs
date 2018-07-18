@@ -50,7 +50,7 @@ Secure clusters require users to authenticate their access to databases and tabl
 ### Create a User
 
 ~~~ sql
-> CREATE USER jpointsman;
+> CREATE USER 'jpointsman';
 ~~~
 
 Usernames are case-insensitive; must start with either a letter or underscore; must contain only letters, numbers, or underscores; and must be between 1 and 63 characters.
@@ -62,7 +62,7 @@ For users on secure clusters, you also need to generate [client certificates and
 ### Create a User with Password Authentication
 
 ~~~ sql
-> CREATE USER jpointsman WITH PASSWORD 'Q7gc8rEdS';
+> CREATE USER 'jpointsman' WITH PASSWORD 'Q7gc8rEdS';
 ~~~
 
 {{site.data.alerts.callout_info}}We strongly recommend also creating <a href="create-security-certificates.html#create-the-certificate-and-key-pair-for-a-client">client certificates and keys</a> and using them to <a href="#secure-clusters-with-client-certificates">authenticate the user's access to the cluster</a>.{{site.data.alerts.end}}

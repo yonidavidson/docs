@@ -19,17 +19,17 @@ Assuming the following statements are run at `2016-01-01 12:00:00`, they would e
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM t AS OF SYSTEM TIME '2016-01-01 08:00:00'
+> SELECT * FROM t AS OF SYSTEM TIME '2016-01-01 08:00:00';
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM t AS OF SYSTEM TIME 1451635200000000000
+> SELECT * FROM t AS OF SYSTEM TIME 1451635200000000000;
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM t AS OF SYSTEM TIME '1451635200000000000'
+> SELECT * FROM t AS OF SYSTEM TIME '1451635200000000000';
 ~~~
 
 ## See Also

@@ -48,12 +48,7 @@ Field | Description
 ## Examples
 
 ~~~ sql
-> CREATE TABLE t1 (
-    a INT PRIMARY KEY,
-    b DECIMAL,
-    c TIMESTAMP,
-    d STRING
-  );
+> CREATE TABLE t1 (a INT PRIMARY KEY, b DECIMAL, c TIMESTAMP, d STRING);
 
 > CREATE INDEX b_c_idx ON t1 (b, c) STORING (d);
 

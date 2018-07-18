@@ -72,7 +72,7 @@ A `TIME`/`TIMETZ` column supports values up to 8 bytes in width, but the total s
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE TABLE time (time_id INT PRIMARY KEY, time_val TIME);
+> CREATE TABLE "time" (time_id INT PRIMARY KEY, time_val TIME);
 ~~~
 
 {% include copy-clipboard.html %}
@@ -92,12 +92,12 @@ A `TIME`/`TIMETZ` column supports values up to 8 bytes in width, but the total s
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> INSERT INTO time VALUES (1, TIME '05:40:00'), (2, TIME '05:41:39');
+> INSERT INTO "time" VALUES (1, TIME '05:40:00'), (2, TIME '05:41:39');
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM time;
+> SELECT * FROM "time";
 ~~~
 
 ~~~
@@ -116,7 +116,9 @@ Comparing `TIME` values:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT (SELECT time_val FROM time WHERE time_id = 1) < (SELECT time_val FROM time WHERE time_id = 2);
+> SELECT
+  (SELECT time_val FROM "time" WHERE time_id = 1)
+  < (SELECT time_val FROM "time" WHERE time_id = 2);
 ~~~
 
 ~~~

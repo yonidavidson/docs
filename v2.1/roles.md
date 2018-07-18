@@ -72,7 +72,7 @@ $ cockroach start \
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > CREATE ROLE system_ops;
+    > CREATE ROLE 'system_ops';
     ~~~
 
     {% include copy-clipboard.html %}
@@ -143,9 +143,9 @@ $ cockroach start \
     {% include copy-clipboard.html %}
     ~~~ sql
     > CREATE TABLE employees (
-        id UUID DEFAULT uuid_v4()::UUID PRIMARY KEY,
-        profile JSONB
-      );
+  id UUID PRIMARY KEY DEFAULT uuid_v4()::UUID,
+  profile JSONB
+);
     ~~~
 
     We were able to create the table because `maxroach` has `CREATE` privileges.
@@ -236,7 +236,7 @@ $ cockroach start \
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > DROP ROLE system_ops;
+    > DROP ROLE 'system_ops';
     ~~~
 
 ## See also

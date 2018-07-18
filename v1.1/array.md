@@ -46,9 +46,9 @@ The size of an `ARRAY` value is variable, but it's recommended to keep values un
 ### Creating an array column by adding the term `ARRAY`
 
 ~~~ sql
-> CREATE TABLE c (d INT ARRAY);
+> CREATE TABLE c (d INT[]);
 
-> INSERT INTO c VALUES (ARRAY[10,20,30]);
+> INSERT INTO c VALUES (ARRAY[10, 20, 30]);
 
 > SELECT * FROM c;
 ~~~

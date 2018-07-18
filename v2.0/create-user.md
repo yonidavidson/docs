@@ -59,7 +59,7 @@ Secure clusters require users to authenticate their access to databases and tabl
 Usernames are case-insensitive; must start with either a letter or underscore; must contain only letters, numbers, or underscores; and must be between 1 and 63 characters.
 
 ~~~ sql
-> CREATE USER jpointsman;
+> CREATE USER 'jpointsman';
 ~~~
 
 After creating users, you must:
@@ -70,7 +70,7 @@ After creating users, you must:
 ### Create a User With a Password
 
 ~~~ sql
-> CREATE USER jpointsman WITH PASSWORD 'Q7gc8rEdS';
+> CREATE USER 'jpointsman' WITH PASSWORD 'Q7gc8rEdS';
 ~~~
 
 <span class="version-tag">Changed in v2.0:</span> Password creation is supported only in secure clusters for non-`root` users. The `root` user must authenticate with a client certificate and key.

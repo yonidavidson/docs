@@ -349,10 +349,7 @@ For some of your tables, you'll want to include a `FOREIGN KEY` columns. You don
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE TABLE parent_table (
-id INT PRIMARY KEY,
-val TEXT
-);
+> CREATE TABLE parent_table (id INT PRIMARY KEY, val TEXT);
 ~~~
 
 {% include copy-clipboard.html %}
@@ -540,10 +537,10 @@ Here's a simple example that will show you all of the customers who have data in
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT customers.id, customers.name
-FROM customers
-JOIN orders
-ON customers.id = orders.customer_id;
+> SELECT
+  customers.id, customers.name
+FROM
+  customers JOIN orders ON customers.id = orders.customer_id;
 ~~~
 
 ### Changing Table's Schema

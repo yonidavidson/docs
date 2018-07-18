@@ -69,7 +69,7 @@ For example:
     user_email STRING UNIQUE,
     logoff_date DATE NOT NULL,
 );
-> CREATE TABLE logoff_copy AS TABLE logoff;
+> CREATE TABLE logoff_copy  AS TABLE logoff;
 > SHOW CREATE TABLE logoff_copy;
 ~~~
 ~~~
@@ -96,7 +96,7 @@ It is however possible to
 For example:
 
 ~~~ sql
-> CREATE INDEX logoff_copy_id_idx ON logoff_copy(user_id);
+> CREATE INDEX logoff_copy_id_idx ON logoff_copy (user_id);
 > SHOW CREATE TABLE logoff_copy;
 ~~~
 ~~~
@@ -135,7 +135,7 @@ results.
 +----+---------+-------+
 ~~~
 ~~~ sql
-> CREATE TABLE customers_ny AS SELECT * FROM customers WHERE state = 'NY';
+> CREATE TABLE customers_ny  AS SELECT * FROM customers WHERE state = 'NY';
 
 > SELECT * FROM customers_ny;
 ~~~
@@ -156,7 +156,8 @@ This statement creates a copy of an existing table but with changed column names
 
 
 ~~~ sql
-> CREATE TABLE customers_ny (id, first_name) AS SELECT id, name FROM customers WHERE state = 'NY';
+> CREATE TABLE customers_ny (id, first_name) AS
+  SELECT id, name FROM customers WHERE state = 'NY';
 
 > SELECT * FROM customers_ny;
 ~~~
@@ -172,7 +173,7 @@ This statement creates a copy of an existing table but with changed column names
 ### Create a Table from a `VALUES` Clause
 
 ~~~ sql
-> CREATE TABLE tech_states AS VALUES ('CA'), ('NY'), ('WA');
+> CREATE TABLE tech_states  AS VALUES ('CA'), ('NY'), ('WA');
 
 > SELECT * FROM tech_states;
 ~~~
@@ -191,7 +192,7 @@ This statement creates a copy of an existing table but with changed column names
 ### Create a Copy of an Existing Table
 
 ~~~ sql
-> CREATE TABLE customers_ny_copy AS TABLE customers_ny;
+> CREATE TABLE customers_ny_copy  AS TABLE customers_ny;
 
 > SELECT * FROM customers_ny_copy;
 ~~~

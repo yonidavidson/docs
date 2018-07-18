@@ -23,11 +23,13 @@ When you have a complex query that, for example, joins several tables, or perfor
 Let's say you're using our [sample `startrek` database](generate-cockroachdb-resources.html#generate-example-data), which contains two tables, `episodes` and `quotes`. There's a foreign key constraint between the `episodes.id` column and the `quotes.episode` column. To count the number of famous quotes per season, you could run the following `JOIN`:
 
 ~~~ sql
-> SELECT startrek.episodes.season, count(*)
-  FROM startrek.quotes
-  JOIN startrek.episodes
-  ON startrek.quotes.episode = startrek.episodes.id
-  GROUP BY startrek.episodes.season;
+> SELECT
+  startrek.episodes.season, count(*)
+FROM
+  startrek.quotes
+  JOIN startrek.episodes ON startrek.quotes.episode = startrek.episodes.id
+GROUP BY
+  startrek.episodes.season;
 ~~~
 
 ~~~
@@ -129,7 +131,7 @@ You then make sure `bob` does not have privileges on the underlying `bank.accoun
 Finally, you grant `bob` privileges on the `bank.user_accounts` view:
 
 ~~~ sql
-> GRANT SELECT ON bank.user_accounts TO bob;
+> GRANT SELECT ON TABLE bank.user_accounts TO bob;
 ~~~
 
 Now, `bob` will get a permissions error when trying to access the underlying `bank.accounts` table but will be allowed to query the `bank.user_accounts` view:
@@ -338,7 +340,7 @@ It is not possible to change the `SELECT` statement executed by the view. Instea
 To remove a view, use the [`DROP VIEW`](drop-view.html) statement:
 
 ~~~ sql
-> DROP VIEW bank.user_accounts
+> DROP VIEW bank.user_accounts;
 ~~~
 
 ~~~

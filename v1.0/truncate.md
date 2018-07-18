@@ -44,7 +44,7 @@ Parameter | Description
 ~~~
 
 ~~~ sql
-> TRUNCATE t1;
+> TRUNCATE TABLE t1;
 
 > SELECT * FROM t1;
 ~~~
@@ -66,7 +66,7 @@ In these examples, the `orders` table has a [Foreign Key](foreign-key.html) rela
 {{site.data.alerts.callout_danger}}<code>CASCADE</code> truncates <em>all</em> dependent tables without listing them, which can lead to inadvertent and difficult-to-recover losses. To avoid potential harm, we recommend truncating tables explicitly in most cases. See <a href="#truncate-dependent-tables-explicitly">Truncate Dependent Tables Explicitly</a> for more details.{{site.data.alerts.end}}
 
 ~~~ sql
-> TRUNCATE customers;
+> TRUNCATE TABLE customers;
 ~~~
 
 ~~~
@@ -74,7 +74,7 @@ pq: "customers" is referenced by foreign key from table "orders"
 ~~~
 
 ~~~sql
-> TRUNCATE customers CASCADE;
+> TRUNCATE TABLE customers CASCADE;
 
 > SELECT * FROM customers;
 ~~~
@@ -102,7 +102,7 @@ pq: "customers" is referenced by foreign key from table "orders"
 #### Truncate Dependent Tables Explicitly
 
 ~~~ sql
-> TRUNCATE customers, orders;
+> TRUNCATE TABLE customers, orders;
 
 > SELECT * FROM customers;
 ~~~

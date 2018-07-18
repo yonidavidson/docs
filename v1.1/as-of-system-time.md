@@ -43,9 +43,7 @@ Imagine this example represents the database's current data:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT name, balance
-    FROM accounts
-   WHERE name = 'Edna Barath';
+> SELECT name, balance FROM accounts WHERE name = 'Edna Barath';
 ~~~
 ~~~
 +-------------+---------+
@@ -60,10 +58,12 @@ We could instead retrieve the values as they were on October 3, 2016 at 12:45 UT
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT name, balance
-    FROM accounts
-         AS OF SYSTEM TIME '2016-10-03 12:45:00'
-   WHERE name = 'Edna Barath';
+> SELECT
+  name, balance
+FROM
+  accounts AS OF SYSTEM TIME '2016-10-03 12:45:00'
+WHERE
+  name = 'Edna Barath';
 ~~~
 ~~~
 +-------------+---------+
@@ -81,17 +81,17 @@ Assuming the following statements are run at `2016-01-01 12:00:00`, they would e
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM t AS OF SYSTEM TIME '2016-01-01 08:00:00'
+> SELECT * FROM t AS OF SYSTEM TIME '2016-01-01 08:00:00';
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM t AS OF SYSTEM TIME 1451635200000000000
+> SELECT * FROM t AS OF SYSTEM TIME 1451635200000000000;
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM t AS OF SYSTEM TIME '1451635200000000000'
+> SELECT * FROM t AS OF SYSTEM TIME '1451635200000000000';
 ~~~
 
 ### Selecting from Multiple Tables
@@ -116,7 +116,10 @@ For example:
 
 {% include copy-clipboard.html %}
 ~~~sql
-> SELECT * FROM (SELECT * FROM t), (SELECT * FROM u) AS OF SYSTEM TIME '2016-01-01 08:00:00';
+> SELECT
+  *
+FROM
+  (SELECT * FROM t), (SELECT * FROM u) AS OF SYSTEM TIME '2016-01-01 08:00:00';
 ~~~
 
 ### Using `AS OF SYSTEM TIME` in Subqueries

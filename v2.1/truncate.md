@@ -48,7 +48,7 @@ Parameter | Description
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> TRUNCATE t1;
+> TRUNCATE TABLE t1;
 ~~~
 
 {% include copy-clipboard.html %}
@@ -74,7 +74,7 @@ In these examples, the `orders` table has a [Foreign Key](foreign-key.html) rela
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> TRUNCATE customers;
+> TRUNCATE TABLE customers;
 ~~~
 
 ~~~
@@ -83,7 +83,7 @@ pq: "customers" is referenced by foreign key from table "orders"
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> TRUNCATE customers CASCADE;
+> TRUNCATE TABLE customers CASCADE;
 ~~~
 
 {% include copy-clipboard.html %}
@@ -116,7 +116,7 @@ pq: "customers" is referenced by foreign key from table "orders"
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> TRUNCATE customers, orders;
+> TRUNCATE TABLE customers, orders;
 ~~~
 
 {% include copy-clipboard.html %}

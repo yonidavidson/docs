@@ -102,7 +102,7 @@ The examples below use the following logical schema as a starting point:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE TABLE mydb.mytable(x INT);
+> CREATE TABLE mydb.mytable (x INT);
 ~~~
 
 {% include copy-clipboard.html %}

@@ -113,9 +113,12 @@ Parameter | Description
 
 ### Update Using `SELECT` Statement
 ~~~ sql
-> UPDATE accounts SET (balance, customer) =
-    (SELECT balance, customer FROM accounts WHERE id = 2)
-     WHERE id = 4;
+> UPDATE
+  accounts
+SET
+  (balance, customer) = (SELECT balance, customer FROM accounts WHERE id = 2)
+WHERE
+  id = 4;
 
 > SELECT * FROM accounts;
 ~~~
@@ -135,7 +138,7 @@ Parameter | Description
 ### Update with Default Values
 
 ~~~ sql
-> UPDATE accounts SET balance = DEFAULT where customer = 'Stanley';
+> UPDATE accounts SET balance = DEFAULT WHERE customer = 'Stanley';
 
 > SELECT * FROM accounts;
 ~~~

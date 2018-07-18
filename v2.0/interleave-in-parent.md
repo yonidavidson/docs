@@ -115,10 +115,7 @@ In general, reads, writes, and joins of values related through the interleave pr
 This example creates an interleaved hierarchy between `customers`, `orders`, and `packages`, as well as the appropriate Foreign Key constraints. You can see that each child table uses its parent table's Primary Key as a prefix of its own Primary Key (the **interleave prefix**).
 
 ~~~ sql
-> CREATE TABLE customers (
-    id INT PRIMARY KEY,
-    name STRING(50)
-  );
+> CREATE TABLE customers (id INT PRIMARY KEY, name STRING(50));
 
 > CREATE TABLE orders (
     customer INT,
@@ -147,17 +144,13 @@ This example creates an interleaved hierarchy between `customers`, `orders`, and
 It can be easier to understand what interleaving tables does by seeing what it looks like in the key-value store. For example, using the above example of interleaving `orders` in `customers`, we could insert the following values:
 
 ~~~ sql
-> INSERT INTO customers
-  (id, name) VALUES
-  (1, 'Ha-Yun'),
-  (2, 'Emanuela');
+> INSERT INTO customers (id, name) VALUES (1, 'Ha-Yun'), (2, 'Emanuela');
 
-> INSERT INTO orders
-  (customer, id, total) VALUES
-  (1, 1000, 100.00),
-  (2, 1001, 90.00),
-  (1, 1002, 80.00),
-  (2, 1003, 70.00);
+> INSERT
+INTO
+  orders (customer, id, total)
+VALUES
+  (1, 1000, 100.00), (2, 1001, 90.00), (1, 1002, 80.00), (2, 1003, 70.00);
 ~~~
 
 Using an illustrative format of the key-value store (keys are represented in colors; values are represented by `-> value`), the data would be written like this:

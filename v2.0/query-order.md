@@ -112,7 +112,7 @@ of the CockroachDB cluster, and is generally variable over time.
 Considering the following table:
 
 ~~~ sql
-> CREATE TABLE a(a INT);
+> CREATE TABLE a (a INT);
 > INSERT INTO a VALUES (1), (3), (2);
 ~~~
 
@@ -139,7 +139,7 @@ Note that the order of the rules matter. If there is ambiguity, the `AS` aliases
 take priority over the data source columns, for example:
 
 ~~~ sql
-> CREATE TABLE ab(a INT, b INT);
+> CREATE TABLE ab (a INT, b INT);
 > SELECT a AS b, b AS c FROM ab ORDER BY b; -- orders by column a, renamed to b
 > SELECT a,      b      FROM ab ORDER BY b; -- orders by column b
 ~~~
@@ -156,7 +156,7 @@ When more than one ordering specification is given, the later specifications are
 to order rows that are equal over the earlier specifications, for example:
 
 ~~~ sql
-> CREATE TABLE ab(a INT, b INT);
+> CREATE TABLE ab (a INT, b INT);
 > SELECT a, b FROM ab ORDER BY b, a;
 ~~~
 
@@ -170,7 +170,7 @@ The keyword `DESC` ("descending") can be added after an ordering specification t
 invert its order. This can be specified separately for each specification, for example:
 
 ~~~ sql
-> CREATE TABLE ab(a INT, b INT);
+> CREATE TABLE ab (a INT, b INT);
 > SELECT a, b FROM ab ORDER BY b DESC, a; -- sorts on b descending, then a ascending.
 ~~~
 
@@ -184,7 +184,7 @@ this guarantees the order while also guaranteeing there will not be an
 additional sorting computation to achieve it, for example:
 
 ~~~ sql
-> CREATE TABLE kv(k INT PRIMARY KEY, v INT);
+> CREATE TABLE kv (k INT PRIMARY KEY, v INT);
 > SELECT k, v FROM kv ORDER BY PRIMARY KEY kv; -- guarantees ordering by column k.
 ~~~
 
@@ -193,7 +193,7 @@ will be flipped (cancelled) if the `ORDER BY` clause also uses
 `DESC`, for example:
 
 ~~~ sql
-> CREATE TABLE ab(a INT, b INT, PRIMARY KEY (b DESC, a ASC));
+> CREATE TABLE ab (a INT, b INT, PRIMARY KEY (b DESC, a ASC));
 > SELECT * FROM ab ORDER BY b DESC; -- orders by b descending, then a ascending.
                                     -- The primary index may be used to optimize.
 
@@ -211,7 +211,7 @@ guarantees the order while also guaranteeing there will not be an
 additional sorting computation to achieve it, for example:
 
 ~~~ sql
-> CREATE TABLE kv(k INT PRIMARY KEY, v INT, INDEX v_idx(v));
+> CREATE TABLE kv (k INT PRIMARY KEY, v INT, INDEX v_idx (v));
 > SELECT k, v FROM kv ORDER BY INDEX kv@v_idx; -- guarantees ordering by column v.
 ~~~
 
@@ -220,7 +220,7 @@ will be flipped (cancelled) if the `ORDER BY` clause also uses
 `DESC`, for example:
 
 ~~~ sql
-> CREATE TABLE ab(a INT, b INT, INDEX b_idx (b DESC, a ASC));
+> CREATE TABLE ab (a INT, b INT, INDEX b_idx (b DESC, a ASC));
 > SELECT * FROM ab ORDER BY b DESC; -- orders by b descending, then a ascending.
                                     -- The index b_idx may be used to optimize.
 

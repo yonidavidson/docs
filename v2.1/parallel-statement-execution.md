@@ -46,8 +46,22 @@ In our sample scenario, the transaction would be as follows:
 ~~~ sql
 > BEGIN;
 > UPDATE users SET last_name = 'Smith' WHERE id = 1 RETURNING NOTHING;
-> UPDATE favorite_movies SET movies = 'The Matrix' WHERE user_id = 1 RETURNING NOTHING;
-> UPDATE favorite_songs SET songs = 'All this time' WHERE user_id = 1 RETURNING NOTHING;
+> UPDATE
+  favorite_movies
+SET
+  movies = 'The Matrix'
+WHERE
+  user_id = 1
+RETURNING
+  NOTHING;
+> UPDATE
+  favorite_songs
+SET
+  songs = 'All this time'
+WHERE
+  user_id = 1
+RETURNING
+  NOTHING;
 > COMMIT;
 ~~~
 
@@ -116,7 +130,7 @@ The following pairs of statements are dependent since reordering them will affec
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> UPDATE a SET y = true  WHERE y = false;
+> UPDATE a SET y = true WHERE y = false;
 > UPDATE a SET y = false WHERE y = true;
 ~~~
 

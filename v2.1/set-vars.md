@@ -119,7 +119,7 @@ The following demonstrates how to assign a list of values:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SET search_path = pg_catalog,public;
+> SET search_path = pg_catalog, public;
 ~~~
 
 {% include copy-clipboard.html %}

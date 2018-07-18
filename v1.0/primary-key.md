@@ -49,12 +49,12 @@ Primary Key constraints can be defined at the [table level](#table-level). Howev
 
 ~~~ sql 
 > CREATE TABLE orders (
-    order_id        INT PRIMARY KEY,
-    order_date      TIMESTAMP NOT NULL,
-    order_mode      STRING(8),
-    customer_id     INT,
-    order_status    INT
-  );
+  order_id INT PRIMARY KEY,
+  order_date TIMESTAMP NOT NULL,
+  order_mode STRING(8),
+  customer_id INT,
+  order_status INT
+);
 ~~~
 
 ### Table Level
@@ -73,22 +73,22 @@ Primary Key constraints can be defined at the [table level](#table-level). Howev
 
 ~~~ sql
 > CREATE TABLE IF NOT EXISTS inventories (
-    product_id        INT,
-    warehouse_id      INT,
-    quantity_on_hand  INT NOT NULL,
-    PRIMARY KEY (product_id, warehouse_id)
-  );
+  product_id INT,
+  warehouse_id INT,
+  quantity_on_hand INT NOT NULL,
+  PRIMARY KEY (product_id, warehouse_id)
+);
 ~~~
 
 ## Usage Example
 
 ~~~ sql
 > CREATE TABLE IF NOT EXISTS inventories (
-    product_id        INT,
-    warehouse_id      INT,
-    quantity_on_hand  INT NOT NULL,
-    PRIMARY KEY (product_id, warehouse_id)
-  );
+  product_id INT,
+  warehouse_id INT,
+  quantity_on_hand INT NOT NULL,
+  PRIMARY KEY (product_id, warehouse_id)
+);
 
 > INSERT INTO inventories VALUES (1, 1, 100);
 

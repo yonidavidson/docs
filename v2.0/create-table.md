@@ -101,10 +101,7 @@ In CockroachDB, every table requires a [primary key](primary-key.html). If one i
 {{site.data.alerts.callout_info}}Strictly speaking, a primary key's unique index is not created; it is derived from the key(s) under which the data is stored, so it takes no additional space. However, it appears as a normal unique index when using commands like <code>SHOW INDEX</code>.{{site.data.alerts.end}}
 
 ~~~ sql
-> CREATE TABLE logon (
-    user_id INT,
-    logon_date DATE
-);
+> CREATE TABLE logon (user_id INT, logon_date DATE);
 
 > SHOW COLUMNS FROM logon;
 ~~~
@@ -138,9 +135,9 @@ In this example, we create a table with three columns. One column is the [primar
 
 ~~~ sql
 > CREATE TABLE logoff (
-    user_id INT PRIMARY KEY,
-    user_email STRING UNIQUE,
-    logoff_date DATE
+  user_id INT PRIMARY KEY,
+  user_email STRING UNIQUE,
+  logoff_date DATE
 );
 
 > SHOW COLUMNS FROM logoff;
@@ -332,7 +329,7 @@ You can use the [`CREATE TABLE AS`](create-table-as.html) statement to create a 
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE TABLE customers_ny AS SELECT * FROM customers WHERE state = 'NY';
+> CREATE TABLE customers_ny  AS SELECT * FROM customers WHERE state = 'NY';
 
 > SELECT * FROM customers_ny;
 ~~~

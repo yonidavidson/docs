@@ -46,10 +46,15 @@ Parameter | Description
 ~~~ sql
 > UPSERT INTO t (a, b, c) VALUES (1, 2, 3);
 
-> INSERT INTO t (a, b, c)
-    VALUES (1, 2, 3)
-    ON CONFLICT (a, b)
-    DO UPDATE SET c = excluded.c;
+> INSERT
+INTO
+  t (a, b, c)
+VALUES
+  (1, 2, 3)
+ON CONFLICT
+  (a, b)
+DO
+  UPDATE SET c = excluded.c;
 ~~~
 
 `INSERT ON CONFLICT` is more flexible and can be used to consider uniqueness for columns not in the primary key. For more details, see the [Upsert that Fails (Conflict on Non-Primary Key)](#upsert-that-fails-conflict-on-non-primary-key) example below.
@@ -183,7 +188,15 @@ pq: duplicate key value (b)=(1) violates unique constraint "unique_test_b_key"
 In such a case, you would need to use the [`INSERT ON CONFLICT`](insert.html) statement to specify the `b` column as the column with the Unique constraint.
 
 ~~~ sql
-> INSERT INTO unique_test VALUES (4, 1) ON CONFLICT (b) DO UPDATE SET a = excluded.a;
+> INSERT
+INTO
+  unique_test
+VALUES
+  (4, 1)
+ON CONFLICT
+  (b)
+DO
+  UPDATE SET a = excluded.a;
 
 > SELECT * FROM unique_test;
 ~~~

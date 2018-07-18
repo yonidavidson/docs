@@ -69,7 +69,7 @@ A `TIMESTAMP`/`TIMESTAMPTZ` column supports values up to 12 bytes in width, but 
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE TABLE timestamps (a INT PRIMARY KEY, b TIMESTAMPTZ);
+> CREATE TABLE timestamps (a INT PRIMARY KEY, b TIMESTAMP WITH TIME ZONE);
 ~~~
 
 {% include copy-clipboard.html %}
@@ -89,7 +89,12 @@ A `TIMESTAMP`/`TIMESTAMPTZ` column supports values up to 12 bytes in width, but 
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> INSERT INTO timestamps VALUES (1, TIMESTAMPTZ '2016-03-26 10:10:10-05:00'), (2, TIMESTAMPTZ '2016-03-26');
+> INSERT
+INTO
+  timestamps
+VALUES
+  (1, TIMESTAMP WITH TIME ZONE '2016-03-26 10:10:10-05:00'),
+  (2, TIMESTAMP WITH TIME ZONE '2016-03-26');
 ~~~
 
 {% include copy-clipboard.html %}

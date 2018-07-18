@@ -68,7 +68,7 @@ A `TIMESTAMP` column supports values up to 12 bytes in width, but the total stor
 ## Examples
 
 ~~~ sql
-> CREATE TABLE timestamps (a INT PRIMARY KEY, b TIMESTAMPTZ);
+> CREATE TABLE timestamps (a INT PRIMARY KEY, b TIMESTAMP WITH TIME ZONE);
 
 > SHOW COLUMNS FROM timestamps;
 ~~~
@@ -82,7 +82,12 @@ A `TIMESTAMP` column supports values up to 12 bytes in width, but the total stor
 (2 rows)
 ~~~
 ~~~ sql
-> INSERT INTO timestamps VALUES (1, TIMESTAMPTZ '2016-03-26 10:10:10-05:00'), (2, TIMESTAMPTZ '2016-03-26');
+> INSERT
+INTO
+  timestamps
+VALUES
+  (1, TIMESTAMP WITH TIME ZONE '2016-03-26 10:10:10-05:00'),
+  (2, TIMESTAMP WITH TIME ZONE '2016-03-26');
 
 > SELECT * FROM timestamps;
 ~~~

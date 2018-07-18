@@ -75,7 +75,7 @@ Now, let's [create a role](create-role.html):
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE ROLE system_ops;
+> CREATE ROLE 'system_ops';
 ~~~
 
 See what roles are in our databases:
@@ -146,9 +146,9 @@ Create a table:
 {% include copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE employees (
-    id UUID DEFAULT uuid_v4()::UUID PRIMARY KEY,
-    profile JSONB
-  );
+  id UUID PRIMARY KEY DEFAULT uuid_v4()::UUID,
+  profile JSONB
+);
 ~~~
 
 You were able to create the table because `maxroach` has `CREATE` privileges. Now, try to drop the table:
@@ -237,7 +237,7 @@ Now that you're logged in as the `root` user, revoke privileges and then drop th
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> DROP ROLE system_ops;
+> DROP ROLE 'system_ops';
 ~~~
 
 ## See Also

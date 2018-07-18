@@ -71,7 +71,11 @@ A `FLOAT` column supports values up to 8 bytes in width, but the total storage s
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> INSERT INTO floats VALUES (1.012345678901, 2.01234567890123456789, CAST('+Inf' AS FLOAT));
+> INSERT
+INTO
+  floats
+VALUES
+  (1.012345678901, 2.01234567890123456789, CAST('+Inf' AS FLOAT));
 ~~~
 
 {% include copy-clipboard.html %}

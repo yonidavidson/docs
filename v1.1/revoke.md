@@ -91,7 +91,7 @@ Parameter | Description
 ~~~
 
 ~~~ sql
-> REVOKE CREATE ON TABLE db1.t1, db1,t2 FROM betsyroach;
+> REVOKE CREATE ON TABLE db1.t1, db1, t2 FROM betsyroach;
 ~~~
 
 ~~~ sql
@@ -131,7 +131,7 @@ Parameter | Description
 ~~~
 
 ~~~ sql
-> REVOKE DELETE ON db2.* FROM betsyroach;
+> REVOKE DELETE ON TABLE db2.* FROM betsyroach;
 ~~~
 
 ~~~

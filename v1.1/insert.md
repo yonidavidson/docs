@@ -46,10 +46,7 @@ Parameter | Description
 All of the examples below assume you've already created a table `accounts`:
 
 ~~~ sql
-> CREATE TABLE accounts(
-    id INT DEFAULT unique_rowid(),
-    balance DECIMAL
-);
+> CREATE TABLE accounts (id INT DEFAULT unique_rowid(), balance DECIMAL);
 ~~~
 
 ### Insert a Single Row
@@ -130,7 +127,15 @@ The experimental [`IMPORT`](import.html) statement performs better than `INSERT`
 +--------+---------+-------+---------+
 ~~~
 ~~~ sql
-> INSERT INTO accounts (id, balance) SELECT number, amount FROM other_accounts WHERE id > 4;
+> INSERT
+INTO
+  accounts (id, balance)
+SELECT
+  number, amount
+FROM
+  other_accounts
+WHERE
+  id > 4;
 
 > SELECT * FROM accounts;
 ~~~
@@ -154,7 +159,7 @@ The experimental [`IMPORT`](import.html) statement performs better than `INSERT`
 > INSERT INTO accounts (id) VALUES (8);
 > INSERT INTO accounts (id, balance) VALUES (9, DEFAULT);
 
-> SELECT * FROM accounts WHERE id in (8, 9);
+> SELECT * FROM accounts WHERE id IN (8, 9);
 ~~~
 ~~~
 +----+---------+
@@ -207,9 +212,13 @@ In this example, the `RETURNING` clause returns the `id` values of the rows inse
 <div class="filter-content" markdown="1" data-scope="shell">
 <p></p>
 ~~~ sql
-> INSERT INTO accounts (id, balance)
-  VALUES (DEFAULT, 1000), (DEFAULT, 250)
-  RETURNING id;
+> INSERT
+INTO
+  accounts (id, balance)
+VALUES
+  (DEFAULT, 1000), (DEFAULT, 250)
+RETURNING
+  id;
 ~~~
 
 ~~~
@@ -446,10 +455,15 @@ IDs:
 When a uniqueness conflict is detected, CockroachDB stores the row in a temporary table called `excluded`. This example demonstrates how you use the columns in the temporary `excluded` table to apply updates on conflict:
 
 ~~~ sql
-> INSERT INTO accounts (id, balance)
-    VALUES (8, 500.50)
-    ON CONFLICT (id)
-    DO UPDATE SET balance = excluded.balance;
+> INSERT
+INTO
+  accounts (id, balance)
+VALUES
+  (8, 500.50)
+ON CONFLICT
+  (id)
+DO
+  UPDATE SET balance = excluded.balance;
 
 > SELECT * FROM accounts WHERE id = 8;
 ~~~
@@ -465,10 +479,15 @@ When a uniqueness conflict is detected, CockroachDB stores the row in a temporar
 You can also update the row using an existing value:
 
 ~~~ sql
-> INSERT INTO accounts (id, balance)
-    VALUES (8, 500.50)
-    ON CONFLICT (id)
-    DO UPDATE SET balance = accounts.balance + excluded.balance;
+> INSERT
+INTO
+  accounts (id, balance)
+VALUES
+  (8, 500.50)
+ON CONFLICT
+  (id)
+DO
+  UPDATE SET balance = accounts.balance + excluded.balance;
 
 > SELECT * FROM accounts WHERE id = 8;
 ~~~
@@ -483,11 +502,17 @@ You can also update the row using an existing value:
 <span class="version-tag">New in v1.1:</span> You can also use a `WHERE` clause to apply the `DO UPDATE SET` expression conditionally:
 
 ~~~ sql
-> INSERT INTO accounts (id, balance)
-    VALUES (8, 700)
-    ON CONFLICT (id)
-    DO UPDATE SET balance = excluded.balance
-    WHERE excluded.balance > accounts.balance;
+> INSERT
+INTO
+  accounts (id, balance)
+VALUES
+  (8, 700)
+ON CONFLICT
+  (id)
+DO
+  UPDATE SET balance = excluded.balance
+WHERE
+  excluded.balance > accounts.balance;
 
 > SELECT * FROM accounts WHERE id = 8;
 ~~~
@@ -525,10 +550,15 @@ pq: duplicate key value (id)=(8) violates unique constraint "primary"
 In this example, we use `ON CONFLICT DO NOTHING` to ignore the uniqueness error and prevent the affected row from being updated:
 
 ~~~ sql
-> INSERT INTO accounts (id, balance)
-    VALUES (8, 125.50)
-    ON CONFLICT (id)
-    DO NOTHING;
+> INSERT
+INTO
+  accounts (id, balance)
+VALUES
+  (8, 125.50)
+ON CONFLICT
+  (id)
+DO
+  NOTHING;
 
 > SELECT * FROM accounts WHERE id = 8;
 ~~~
@@ -543,12 +573,17 @@ In this example, we use `ON CONFLICT DO NOTHING` to ignore the uniqueness error 
 In this example, `ON CONFLICT DO NOTHING` prevents the first row from updating while allowing the second row to be inserted:
 
 ~~~ sql
-> INSERT INTO accounts (id, balance)
-    VALUES (8, 125.50), (10, 450)
-    ON CONFLICT (id)
-    DO NOTHING;
+> INSERT
+INTO
+  accounts (id, balance)
+VALUES
+  (8, 125.50), (10, 450)
+ON CONFLICT
+  (id)
+DO
+  NOTHING;
 
-> SELECT * FROM accounts WHERE id in (8, 10);
+> SELECT * FROM accounts WHERE id IN (8, 10);
 ~~~
 ~~~
 +----+---------+

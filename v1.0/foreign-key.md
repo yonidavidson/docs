@@ -81,11 +81,11 @@ Foreign Key constraints can be defined at the [table level](#table-level). Howev
 
 ~~~ sql
 > CREATE TABLE IF NOT EXISTS orders (
-    id INT PRIMARY KEY,
-    customer INT NOT NULL REFERENCES customers (id),
-    orderTotal DECIMAL(9,2),
-    INDEX (customer)
-  );
+  id INT PRIMARY KEY,
+  customer INT NOT NULL REFERENCES customers (id),
+  ordertotal DECIMAL(9,2),
+  INDEX (customer)
+);
 ~~~
 
 ### Table Level
@@ -124,11 +124,11 @@ CREATE TABLE packages (
 > CREATE TABLE customers (id INT PRIMARY KEY, email STRING UNIQUE);
 
 > CREATE TABLE IF NOT EXISTS orders (
-    id INT PRIMARY KEY,
-    customer INT NOT NULL REFERENCES customers (id),
-    orderTotal DECIMAL(9,2),
-    INDEX (customer)
-  );
+  id INT PRIMARY KEY,
+  customer INT NOT NULL REFERENCES customers (id),
+  ordertotal DECIMAL(9,2),
+  INDEX (customer)
+);
 
 > INSERT INTO customers VALUES (1001, 'a@co.tld');
 

@@ -31,11 +31,13 @@ Let's say you're using our [sample `startrek` database](generate-cockroachdb-res
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT startrek.episodes.season, count(*)
-  FROM startrek.quotes
-  JOIN startrek.episodes
-  ON startrek.quotes.episode = startrek.episodes.id
-  GROUP BY startrek.episodes.season;
+> SELECT
+  startrek.episodes.season, count(*)
+FROM
+  startrek.quotes
+  JOIN startrek.episodes ON startrek.quotes.episode = startrek.episodes.id
+GROUP BY
+  startrek.episodes.season;
 ~~~
 
 ~~~

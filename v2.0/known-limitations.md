@@ -63,7 +63,7 @@ As a workaround, use integer values or a percentage, for example, `--cache=1536M
 A simple `INSERT` statement that fails the Check constraint fails as it should:
 
 ~~~ sql
-> INSERT INTO ab (a,b) VALUES (1, 12312);
+> INSERT INTO ab (a, b) VALUES (1, 12312);
 ~~~
 
 ~~~
@@ -77,7 +77,7 @@ However, the same statement with `INSERT ... ON CONFLICT` incorrectly succeeds a
 ~~~
 
 ~~~ sql
-> INSERT INTO ab (a, b) VALUES (1,0) ON CONFLICT (a) DO UPDATE SET b = 123132;
+> INSERT INTO ab (a, b) VALUES (1, 0) ON CONFLICT (a) DO UPDATE SET b = 123132;
 ~~~
 
 ~~~ sql
@@ -126,15 +126,15 @@ However, the same statement with `INSERT ... ON CONFLICT` incorrectly succeeds a
 It is currently not possible to [add a column](add-column.html) to a table when the column uses a [sequence](create-sequence.html), [computed column](computed-columns.html), or certain evaluated expressions as the [`DEFAULT`](default-value.html) value, for example:
 
 ~~~ sql
-> ALTER TABLE add_default ADD g INT DEFAULT nextval('initial_seq')
+> ALTER TABLE add_default ADD COLUMN g INT DEFAULT nextval('initial_seq');
 ~~~
 
 ~~~ sql
-> ALTER TABLE add_default ADD g OID DEFAULT 'foo'::regclass::oid
+> ALTER TABLE add_default ADD COLUMN g OID DEFAULT 'foo'::REGCLASS::OID;
 ~~~
 
 ~~~ sql
-> ALTER TABLE add_default ADD g INT DEFAULT 'foo'::regtype::INT
+> ALTER TABLE add_default ADD COLUMN g INT DEFAULT 'foo'::REGTYPE::INT;
 ~~~
 
 ## Unresolved Limitations

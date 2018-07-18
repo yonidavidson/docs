@@ -40,10 +40,10 @@ Unique constraints can be defined at the [table level](#table-level). However, i
 
 ~~~ sql
 > CREATE TABLE warehouses (
-    warehouse_id    INT        PRIMARY KEY NOT NULL,
-    warehouse_name  STRING(35) UNIQUE,
-    location_id     INT
-  );
+  warehouse_id INT NOT NULL PRIMARY KEY,
+  warehouse_name STRING(35) UNIQUE,
+  location_id INT
+);
 ~~~
 
 ### Table Level
@@ -64,22 +64,22 @@ Unique constraints can be defined at the [table level](#table-level). However, i
 
 ~~~ sql
 > CREATE TABLE logon (
-    login_id  INT PRIMARY KEY, 
-    customer_id   INT,
-    logon_date    TIMESTAMP,
-    UNIQUE (customer_id, logon_date)
-  );
+  login_id INT PRIMARY KEY,
+  customer_id INT,
+  logon_date TIMESTAMP,
+  UNIQUE (customer_id, logon_date)
+);
 ~~~
 
 ## Usage Example
 
 ~~~ sql
 > CREATE TABLE IF NOT EXISTS logon (
-    login_id INT PRIMARY KEY, 
-    customer_id   INT NOT NULL,
-    sales_id INT,
-    UNIQUE (customer_id, sales_id)
-  );
+  login_id INT PRIMARY KEY,
+  customer_id INT NOT NULL,
+  sales_id INT,
+  UNIQUE (customer_id, sales_id)
+);
 
 > INSERT INTO logon (login_id, customer_id, sales_id) VALUES (1, 2, 1);
 

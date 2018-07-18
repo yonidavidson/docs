@@ -65,10 +65,7 @@ All of the examples below assume you've already created a table `accounts`:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE TABLE accounts(
-    id INT DEFAULT unique_rowid(),
-    balance DECIMAL
-);
+> CREATE TABLE accounts (id INT DEFAULT unique_rowid(), balance DECIMAL);
 ~~~
 
 ### Insert a single row
@@ -173,7 +170,15 @@ The [`IMPORT`](import.html) statement performs better than `INSERT` when inserti
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> INSERT INTO accounts (id, balance) SELECT number, amount FROM other_accounts WHERE id > 4;
+> INSERT
+INTO
+  accounts (id, balance)
+SELECT
+  number, amount
+FROM
+  other_accounts
+WHERE
+  id > 4;
 ~~~
 
 {% include copy-clipboard.html %}
@@ -209,7 +214,7 @@ The [`IMPORT`](import.html) statement performs better than `INSERT` when inserti
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM accounts WHERE id in (8, 9);
+> SELECT * FROM accounts WHERE id IN (8, 9);
 ~~~
 
 ~~~
@@ -270,9 +275,13 @@ In this example, the `RETURNING` clause returns the `id` values of the rows inse
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> INSERT INTO accounts (id, balance)
-  VALUES (DEFAULT, 1000), (DEFAULT, 250)
-  RETURNING id;
+> INSERT
+INTO
+  accounts (id, balance)
+VALUES
+  (DEFAULT, 1000), (DEFAULT, 250)
+RETURNING
+  id;
 ~~~
 
 ~~~
@@ -511,10 +520,15 @@ When a uniqueness conflict is detected, CockroachDB stores the row in a temporar
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> INSERT INTO accounts (id, balance)
-    VALUES (8, 500.50)
-    ON CONFLICT (id)
-    DO UPDATE SET balance = excluded.balance;
+> INSERT
+INTO
+  accounts (id, balance)
+VALUES
+  (8, 500.50)
+ON CONFLICT
+  (id)
+DO
+  UPDATE SET balance = excluded.balance;
 ~~~
 
 {% include copy-clipboard.html %}
@@ -535,10 +549,15 @@ You can also update the row using an existing value:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> INSERT INTO accounts (id, balance)
-    VALUES (8, 500.50)
-    ON CONFLICT (id)
-    DO UPDATE SET balance = accounts.balance + excluded.balance;
+> INSERT
+INTO
+  accounts (id, balance)
+VALUES
+  (8, 500.50)
+ON CONFLICT
+  (id)
+DO
+  UPDATE SET balance = accounts.balance + excluded.balance;
 ~~~
 
 {% include copy-clipboard.html %}
@@ -558,11 +577,17 @@ You can also use a `WHERE` clause to apply the `DO UPDATE SET` expression condit
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> INSERT INTO accounts (id, balance)
-    VALUES (8, 700)
-    ON CONFLICT (id)
-    DO UPDATE SET balance = excluded.balance
-    WHERE excluded.balance > accounts.balance;
+> INSERT
+INTO
+  accounts (id, balance)
+VALUES
+  (8, 700)
+ON CONFLICT
+  (id)
+DO
+  UPDATE SET balance = excluded.balance
+WHERE
+  excluded.balance > accounts.balance;
 ~~~
 
 {% include copy-clipboard.html %}
@@ -609,10 +634,15 @@ In this example, we use `ON CONFLICT DO NOTHING` to ignore the uniqueness error 
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> INSERT INTO accounts (id, balance)
-    VALUES (8, 125.50)
-    ON CONFLICT (id)
-    DO NOTHING;
+> INSERT
+INTO
+  accounts (id, balance)
+VALUES
+  (8, 125.50)
+ON CONFLICT
+  (id)
+DO
+  NOTHING;
 ~~~
 
 {% include copy-clipboard.html %}
@@ -632,15 +662,20 @@ In this example, `ON CONFLICT DO NOTHING` prevents the first row from updating w
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> INSERT INTO accounts (id, balance)
-    VALUES (8, 125.50), (10, 450)
-    ON CONFLICT (id)
-    DO NOTHING;
+> INSERT
+INTO
+  accounts (id, balance)
+VALUES
+  (8, 125.50), (10, 450)
+ON CONFLICT
+  (id)
+DO
+  NOTHING;
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM accounts WHERE id in (8, 10);
+> SELECT * FROM accounts WHERE id IN (8, 10);
 ~~~
 
 ~~~

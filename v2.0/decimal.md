@@ -72,7 +72,11 @@ The size of a `DECIMAL` value is variable, starting at 9 bytes. It's recommended
 +-------+---------------+-------+---------+
 ~~~
 ~~~ sql
-> INSERT INTO decimals VALUES (1.01234567890123456789, 1.01234567890123456789, 1.01234567890123456789);
+> INSERT
+INTO
+  decimals
+VALUES
+  (1.01234567890123456789, 1.01234567890123456789, 1.01234567890123456789);
 
 > SELECT * FROM decimals;
 ~~~

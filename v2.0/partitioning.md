@@ -89,12 +89,13 @@ For instance, consider the database of a global online learning portal that has 
 {% include copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE students (
-    id SERIAL,
-    name STRING,
-    email STRING,
-    country STRING,
-    expected_graduation_date DATE,   
-    PRIMARY KEY (country, id));
+  id SERIAL,
+  name STRING,
+  email STRING,
+  country STRING,
+  expected_graduation_date DATE,
+  PRIMARY KEY (country, id)
+);
 ~~~
 
 **Primary Key Considerations**

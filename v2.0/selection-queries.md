@@ -121,7 +121,7 @@ shorter to type.
 
 {% include copy-clipboard.html %}
 ~~~sql
-> CREATE TABLE employee_copy AS TABLE employee;
+> CREATE TABLE employee_copy  AS TABLE employee;
 ~~~
 
 This statement copies the content from table `employee` into a new
@@ -175,13 +175,8 @@ By default, each of these comparisons displays only one copy of each value (simi
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT name
-FROM accounts
-WHERE state_opened IN ('AZ', 'NY')
-UNION
-SELECT name
-FROM mortgages
-WHERE state_opened IN ('AZ', 'NY');
+> SELECT name FROM accounts WHERE state_opened IN ('AZ', 'NY')
+UNION SELECT name FROM mortgages WHERE state_opened IN ('AZ', 'NY');
 ~~~
 ~~~
 +-----------------+
@@ -198,13 +193,8 @@ To show duplicate rows, you can use `ALL`.
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT name
-FROM accounts
-WHERE state_opened IN ('AZ', 'NY')
-UNION ALL
-SELECT name
-FROM mortgages
-WHERE state_opened IN ('AZ', 'NY');
+> SELECT name FROM accounts WHERE state_opened IN ('AZ', 'NY')
+UNION ALL SELECT name FROM mortgages WHERE state_opened IN ('AZ', 'NY');
 ~~~
 ~~~
 +-----------------+
@@ -225,12 +215,8 @@ WHERE state_opened IN ('AZ', 'NY');
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT name
-FROM accounts
-WHERE state_opened IN ('NJ', 'VA')
-INTERSECT
-SELECT name
-FROM mortgages;
+> SELECT name FROM accounts WHERE state_opened IN ('NJ', 'VA')
+INTERSECT SELECT name FROM mortgages;
 ~~~
 ~~~
 +-----------------+
@@ -247,11 +233,7 @@ FROM mortgages;
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT name
-FROM mortgages
-EXCEPT
-SELECT name
-FROM accounts;
+> SELECT name FROM mortgages EXCEPT SELECT name FROM accounts;
 ~~~
 ~~~
 +------------------+
@@ -270,10 +252,7 @@ The following sections provide examples. For more details, see [Ordering Query R
 ### Order Retrieved Rows by One Column
 
 ~~~ sql
-> SELECT *
-FROM accounts
-WHERE balance BETWEEN 350 AND 500
-ORDER BY balance DESC;
+> SELECT * FROM accounts WHERE balance BETWEEN 350 AND 500 ORDER BY balance DESC;
 ~~~
 ~~~
 +----+--------------------+---------+----------+--------------+
@@ -295,10 +274,14 @@ ORDER BY balance DESC;
 Columns are sorted in the order you list them in `sortby_list`. For example, `ORDER BY a, b` sorts the rows by column `a` and then sorts rows with the same `a` value by their column `b` values.
 
 ~~~ sql
-> SELECT *
-FROM accounts
-WHERE balance BETWEEN 350 AND 500
-ORDER BY balance DESC, name ASC;
+> SELECT
+  *
+FROM
+  accounts
+WHERE
+  balance BETWEEN 350 AND 500
+ORDER BY
+  balance DESC, name ASC;
 ~~~
 ~~~
 +----+--------------------+---------+----------+--------------+
@@ -324,9 +307,7 @@ The following sections provide examples. For more details, see [Limiting Query R
 You can reduce the number of results with `LIMIT`.
 
 ~~~ sql
-> SELECT id, name
-FROM accounts
-LIMIT 5;
+> SELECT id, name FROM accounts LIMIT 5;
 ~~~
 ~~~
 +----+------------------+
@@ -345,10 +326,7 @@ LIMIT 5;
 If you want to limit the number of results, but go beyond the initial set, use `OFFSET` to proceed to the next set of results. This is often used to paginate through large tables where not all of the values need to be immediately retrieved.
 
 ~~~ sql
-> SELECT id, name
-FROM accounts
-LIMIT 5
-OFFSET 5;
+> SELECT id, name FROM accounts LIMIT 5 OFFSET 5;
 ~~~
 ~~~
 +----+------------------+
@@ -413,8 +391,8 @@ For example, the [simple table name](table-expressions.html#table-or-view-names)
 Likewise, the [SQL join expression](joins.html) `customers c JOIN orders o ON c.id = o.customer_id` is a table expression. You can turn it into a valid selection clause, and thus a valid selection query as follows:
 
 ~~~sql
-> TABLE (customers c JOIN orders o ON c.id = o.customer_id);
-> SELECT * FROM customers c JOIN orders o ON c.id = o.customer_id;
+> TABLE (customers AS c JOIN orders AS o ON c.id = o.customer_id);
+> SELECT * FROM customers AS c JOIN orders AS o ON c.id = o.customer_id;
 ~~~
 
 ### Using Any Selection Query as Table Expression
@@ -426,17 +404,19 @@ expression](table-expressions.html) by enclosing it between parentheses, which f
 For example, the following construct is a selection query, but is not a valid table expression:
 
 ~~~sql
-> SELECT * FROM customers ORDER BY name LIMIT 5
+> SELECT * FROM customers ORDER BY name LIMIT 5;
 ~~~
 
 To make it valid as operand to `FROM` or another table expression, you can enclose it between parentheses as follows:
 
 ~~~sql
 > SELECT id FROM (SELECT * FROM customers ORDER BY name LIMIT 5);
-> SELECT o.id
-    FROM orders o
-    JOIN (SELECT * FROM customers ORDER BY name LIMIT 5) AS c
-	  ON o.customer_id = c.id;
+> SELECT
+  o.id
+FROM
+  orders AS o
+  JOIN (SELECT * FROM customers ORDER BY name LIMIT 5) AS c
+  ON o.customer_id = c.id;
 ~~~
 
 ### Using Selection Queries With Other Statements

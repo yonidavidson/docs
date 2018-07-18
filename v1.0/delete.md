@@ -150,7 +150,12 @@ By specifying `*`, you retrieve all columns of the delete rows.
 To retrieve specific columns, name them in the `RETURNING` clause.
 
 ~~~ sql
-> DELETE FROM account_details WHERE account_id = 5 RETURNING account_id, account_type;
+> DELETE FROM
+  account_details
+WHERE
+  account_id = 5
+RETURNING
+  account_id, account_type;
 ~~~
 ~~~
 +------------+--------------+
@@ -165,7 +170,12 @@ To retrieve specific columns, name them in the `RETURNING` clause.
 When `RETURNING` specific columns, you can change their labels using `AS`.
 
 ~~~ sql
-> DELETE FROM account_details WHERE balance < 22500 RETURNING account_id, balance AS final_balance;
+> DELETE FROM
+  account_details
+WHERE
+  balance < 22500
+RETURNING
+  account_id, balance AS final_balance;
 ~~~
 ~~~
 +------------+---------------+

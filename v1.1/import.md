@@ -275,71 +275,31 @@ Convert values to SQL *NULL* if they match the specified string.
 ### Use Create Table Statement from a File
 
 ~~~ sql
-> IMPORT TABLE customers
-CREATE USING 'azure://acme-co/customer-create-table.sql?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co'
-CSV DATA ('azure://acme-co/customer-import-data.csv?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co')
-WITH
-	temp = 'azure://acme-co/temp/?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co'
-;
+> IMPORT TABLE customers CREATE USING 'azure://acme-co/customer-create-table.sql?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co' CSV DATA ('azure://acme-co/customer-import-data.csv?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co') WITH temp = 'azure://acme-co/temp/?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co';
 ~~~
 
 ### Use Create Table Statement from a Statement
 
 ~~~ sql
-> IMPORT TABLE customers (
-		id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-		name TEXT,
-		INDEX name_idx (name)
-)
-CSV DATA ('azure://acme-co/customer-import-data.csv?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co')
-WITH
-	temp = 'azure://acme-co/temp/?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co'
-;
+> IMPORT TABLE customers (id UUID PRIMARY KEY DEFAULT gen_random_uuid(), name TEXT, INDEX name_idx (name)) CSV DATA ('azure://acme-co/customer-import-data.csv?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co') WITH temp = 'azure://acme-co/temp/?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co';
 ~~~
 
 ### Import a Tab-Separated File
 
 ~~~ sql
-> IMPORT TABLE customers (
-		id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-		name TEXT,
-		INDEX name_idx (name)
-)
-CSV DATA ('azure://acme-co/customer-import-data.tsc?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co')
-WITH
-	temp = 'azure://acme-co/temp/?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co',
-	delimiter = e'\t'
-;
+> IMPORT TABLE customers (id UUID PRIMARY KEY DEFAULT gen_random_uuid(), name TEXT, INDEX name_idx (name)) CSV DATA ('azure://acme-co/customer-import-data.tsc?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co') WITH temp = 'azure://acme-co/temp/?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co', delimiter = e'\t';
 ~~~
 
 ### Skip Commented Lines
 
 ~~~ sql
-> IMPORT TABLE customers (
-		id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-		name TEXT,
-		INDEX name_idx (name)
-)
-CSV DATA ('azure://acme-co/customer-import-data.tsc?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co')
-WITH
-	temp = 'azure://acme-co/temp/?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co',
-	comment = '#'
-;
+> IMPORT TABLE customers (id UUID PRIMARY KEY DEFAULT gen_random_uuid(), name TEXT, INDEX name_idx (name)) CSV DATA ('azure://acme-co/customer-import-data.tsc?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co') WITH temp = 'azure://acme-co/temp/?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co', comment = '#';
 ~~~
 
 ### Use Blank Characters as *NULL*
 
 ~~~ sql
-> IMPORT TABLE customers (
-		id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-		name TEXT,
-		INDEX name_idx (name)
-)
-CSV DATA ('azure://acme-co/customer-import-data.tsc?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co')
-WITH
-	temp = 'azure://acme-co/temp/?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co',
-	nullif = ''
-;
+> IMPORT TABLE customers (id UUID PRIMARY KEY DEFAULT gen_random_uuid(), name TEXT, INDEX name_idx (name)) CSV DATA ('azure://acme-co/customer-import-data.tsc?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co') WITH temp = 'azure://acme-co/temp/?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co', "nullif" = '';
 ~~~
 
 ## See Also

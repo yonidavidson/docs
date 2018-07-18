@@ -41,10 +41,14 @@ For example:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> WITH o AS (SELECT * FROM orders WHERE id IN (33, 542, 112))
-  SELECT *
-    FROM customers AS c, o
-   WHERE o.customer_id = c.id;
+> WITH
+  o AS (SELECT * FROM orders WHERE id IN (33, 542, 112))
+SELECT
+  *
+FROM
+  customers AS c, o
+WHERE
+  o.customer_id = c.id;
 ~~~
 
 In this example, the `WITH` clause defines the temporary name `o` for
@@ -56,9 +60,12 @@ This query is equivalent to, but arguably simpler to read than:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT *
-    FROM customers AS c, (SELECT * FROM orders WHERE id IN (33, 542, 112)) AS o
-   WHERE o.customer_id = c.id;
+> SELECT
+  *
+FROM
+  customers AS c, (SELECT * FROM orders WHERE id IN (33, 542, 112)) AS o
+WHERE
+  o.customer_id = c.id;
 ~~~
 
 It is also possible to define multiple common table expressions
@@ -68,9 +75,13 @@ following query is equivalent to the two examples above:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> WITH o       AS (SELECT * FROM orders WHERE id IN (33, 542, 112)),
-       results AS (SELECT * FROM customers AS c, o WHERE o.customer_id = c.id)
-  SELECT * FROM results;
+> WITH
+  o AS (SELECT * FROM orders WHERE id IN (33, 542, 112)),
+  results AS (SELECT * FROM customers AS c, o WHERE o.customer_id = c.id)
+SELECT
+  *
+FROM
+  results;
 ~~~
 
 In this example, the second CTE `results` refers to the first CTE `o`
@@ -82,9 +93,12 @@ It is possible to use a `WITH` clause in a subquery, or even a `WITH` clause wit
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> WITH a AS (SELECT * FROM (WITH b AS (SELECT * FROM c)
-                            SELECT * FROM b))
-  SELECT * FROM a;
+> WITH
+  a AS (SELECT * FROM (WITH b AS (SELECT * FROM c) SELECT * FROM b))
+SELECT
+  *
+FROM
+  a;
 ~~~
 
 When analyzing [table expressions](table-expressions.html) that
@@ -93,10 +107,7 @@ closest to the table expression. For example:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> WITH a AS (TABLE x),
-       b AS (WITH a AS (TABLE y)
-             SELECT * FROM a)
-  SELECT * FROM b;
+> WITH a AS (TABLE x), b AS (WITH a AS (TABLE y) SELECT * FROM a) SELECT * FROM b;
 ~~~
 
 In this example, the inner subquery `SELECT * FROM a` will select from
@@ -111,8 +122,12 @@ For example:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> WITH v AS (INSERT INTO t(x) VALUES (1), (2), (3) RETURNING x)
-  SELECT x+1 FROM v
+> WITH
+  v AS (INSERT INTO t (x) VALUES (1), (2), (3) RETURNING x)
+SELECT
+  x + 1
+FROM
+  v;
 ~~~
 
 However, the following restriction applies: only `WITH` sub-clauses at
@@ -121,9 +136,17 @@ statements. The example above is valid, but the following is not:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT x+1 FROM
-    (WITH v AS (INSERT INTO t(x) VALUES (1), (2), (3) RETURNING x)
-     SELECT * FROM v);
+> SELECT
+  x + 1
+FROM
+  (
+    WITH
+      v AS (INSERT INTO t (x) VALUES (1), (2), (3) RETURNING x)
+    SELECT
+      *
+    FROM
+      v
+  );
 ~~~
 
 This is not valid because the `WITH` clause that defines an `INSERT`

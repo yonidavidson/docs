@@ -47,14 +47,14 @@ In this example, first check a role's privileges. Then, revoke the role's privil
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> REVOKE INSERT ON documents FROM dev_ops;
+> REVOKE INSERT ON TABLE documents FROM dev_ops;
 ~~~
 
 {{site.data.alerts.callout_info}}All of a role's privileges must be revoked before the role can be dropped.{{site.data.alerts.end}}
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> DROP ROLE dev_ops;
+> DROP ROLE 'dev_ops';
 ~~~
 ~~~
 DROP ROLE 1

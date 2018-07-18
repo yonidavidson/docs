@@ -187,7 +187,7 @@ that are known to have the same value on all rows. For example:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> EXPLAIN (METADATA) SELECT * FROM abcd JOIN efg ON a=e AND c=1;
+> EXPLAIN (METADATA) SELECT * FROM abcd JOIN efg ON (a = e) AND (c = 1);
 ~~~
 
 ~~~

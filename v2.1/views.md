@@ -24,11 +24,13 @@ Let's say you're using our [sample `startrek` database](generate-cockroachdb-res
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT startrek.episodes.season, count(*)
-  FROM startrek.quotes
-  JOIN startrek.episodes
-  ON startrek.quotes.episode = startrek.episodes.id
-  GROUP BY startrek.episodes.season;
+> SELECT
+  startrek.episodes.season, count(*)
+FROM
+  startrek.quotes
+  JOIN startrek.episodes ON startrek.quotes.episode = startrek.episodes.id
+GROUP BY
+  startrek.episodes.season;
 ~~~
 
 ~~~
@@ -136,7 +138,7 @@ Finally, you grant `bob` privileges on the `bank.user_accounts` view:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> GRANT SELECT ON bank.user_accounts TO bob;
+> GRANT SELECT ON TABLE bank.user_accounts TO bob;
 ~~~
 
 Now, `bob` will get a permissions error when trying to access the underlying `bank.accounts` table but will be allowed to query the `bank.user_accounts` view:
@@ -277,7 +279,12 @@ You can also inspect the `SELECT` statement executed by a view by querying the `
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT view_definition FROM bank.information_schema.views WHERE table_name = 'user_accounts';
+> SELECT
+  view_definition
+FROM
+  bank.information_schema.views
+WHERE
+  table_name = 'user_accounts';
 ~~~
 
 ~~~
@@ -358,7 +365,7 @@ To remove a view, use the [`DROP VIEW`](drop-view.html) statement:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> DROP VIEW bank.user_accounts
+> DROP VIEW bank.user_accounts;
 ~~~
 
 ~~~

@@ -55,12 +55,12 @@ The size of an `ARRAY` value is variable, but it's recommended to keep values un
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE TABLE c (d INT ARRAY);
+> CREATE TABLE c (d INT[]);
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> INSERT INTO c VALUES (ARRAY[10,20,30]);
+> INSERT INTO c VALUES (ARRAY[10, 20, 30]);
 ~~~
 
 {% include copy-clipboard.html %}
@@ -186,7 +186,7 @@ The size of an `ARRAY` value is variable, but it's recommended to keep values un
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT ARRAY[true,false,true]::INT[];
+> SELECT ARRAY[true, false, true]::INT[];
 ~~~
 
 ~~~
@@ -201,7 +201,7 @@ The size of an `ARRAY` value is variable, but it's recommended to keep values un
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT ARRAY[true,false,true]::TIMESTAMP[];
+> SELECT ARRAY[true, false, true]::TIMESTAMP[];
 ~~~
 
 ~~~

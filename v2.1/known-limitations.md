@@ -60,7 +60,7 @@ A simple `INSERT` statement that fails the Check constraint fails as it should:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> INSERT INTO ab (a,b) VALUES (1, 12312);
+> INSERT INTO ab (a, b) VALUES (1, 12312);
 ~~~
 
 ~~~
@@ -76,7 +76,7 @@ However, the same statement with `INSERT ... ON CONFLICT` incorrectly succeeds a
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> INSERT INTO ab (a, b) VALUES (1,0) ON CONFLICT (a) DO UPDATE SET b = 123132;
+> INSERT INTO ab (a, b) VALUES (1, 0) ON CONFLICT (a) DO UPDATE SET b = 123132;
 ~~~
 
 {% include copy-clipboard.html %}
@@ -127,17 +127,17 @@ It is currently not possible to [add a column](add-column.html) to a table when 
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> ALTER TABLE add_default ADD g INT DEFAULT nextval('initial_seq')
+> ALTER TABLE add_default ADD COLUMN g INT DEFAULT nextval('initial_seq');
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> ALTER TABLE add_default ADD g OID DEFAULT 'foo'::regclass::oid
+> ALTER TABLE add_default ADD COLUMN g OID DEFAULT 'foo'::REGCLASS::OID;
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> ALTER TABLE add_default ADD g INT DEFAULT 'foo'::regtype::INT
+> ALTER TABLE add_default ADD COLUMN g INT DEFAULT 'foo'::REGTYPE::INT;
 ~~~
 
 ### Available capacity metric in the Admin UI

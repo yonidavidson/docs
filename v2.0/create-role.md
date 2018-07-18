@@ -42,7 +42,7 @@ Roles can only be created by superusers, i.e., members of the `admin` role. The 
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE ROLE dev_ops;
+> CREATE ROLE 'dev_ops';
 ~~~
 ~~~
 CREATE ROLE 1

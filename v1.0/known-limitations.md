@@ -115,11 +115,11 @@ For example, let's say that latency is 10ms from nodes in datacenter A to nodes 
 Queries with constant expressions that evaluate to 2**-63 might get incorrectly rejected, for example:
 
 ~~~ sql
-> CREATE TABLE t (i int PRIMARY KEY);
+> CREATE TABLE t (i INT PRIMARY KEY);
 
 > INSERT INTO t VALUES (1), (2), (3);
 
-> SELECT (-9223372036854775808) ::: INT;
+> SELECT (-9223372036854775808):::INT;
 
 > SELECT i FROM t WHERE (i, i) < (1, -9223372036854775808);
 ~~~
@@ -201,7 +201,7 @@ It is not possible to fully qualify a column that comes from a view because the 
 
 > CREATE VIEW Caps AS SELECT a, b FROM test;
 
-> SELECT sum(Caps.a) FROM Caps GROUP BY b;
+> SELECT sum(caps.a) FROM caps GROUP BY b;
 ~~~
 
 ~~~
@@ -301,9 +301,7 @@ For example:
 ~~~
 
 ~~~ sql
-> CREATE INDEX c ON t1 (id2)
-      STORING (id1, id3)
-      INTERLEAVE IN PARENT t1 (id2);
+> CREATE INDEX c ON t1 (id2) STORING (id1, id3) INTERLEAVE IN PARENT t1 (id2);
 ~~~
 
 ~~~ sql
@@ -363,7 +361,7 @@ For example, consider a database `test` with 2 tables and 1 view. Table `a` has 
 
 > CREATE TABLE test.c (a INT PRIMARY KEY, b STRING);
 
-> CREATE TABLE test.a (a INT PRIMARY KEY, b INT NOT NULL REFERENCES test.c (a))
+> CREATE TABLE test.a (a INT PRIMARY KEY, b INT NOT NULL REFERENCES test.c (a));
 
 > CREATE VIEW test.b AS SELECT b FROM test.c;
 ~~~

@@ -14,19 +14,15 @@ This page summarizes how `NULL` values are handled in CockroachDB SQL. Each topi
 Any comparison between a value and `NULL` results in `NULL`. This behavior is consistent with PostgresSQL as well as all other major RDBMS's.
 
 ~~~ sql
-> CREATE TABLE t1(
-  a INT,
-  b INT,
-  c INT
-);
+> CREATE TABLE t1 (a INT, b INT, c INT);
 
-> INSERT INTO t1 VALUES(1, 0, 0);
-> INSERT INTO t1 VALUES(2, 0, 1);
-> INSERT INTO t1 VALUES(3, 1, 0);
-> INSERT INTO t1 VALUES(4, 1, 1);
-> INSERT INTO t1 VALUES(5, NULL, 0);
-> INSERT INTO t1 VALUES(6, NULL, 1);
-> INSERT INTO t1 VALUES(7, NULL, NULL);
+> INSERT INTO t1 VALUES (1, 0, 0);
+> INSERT INTO t1 VALUES (2, 0, 1);
+> INSERT INTO t1 VALUES (3, 1, 0);
+> INSERT INTO t1 VALUES (4, 1, 1);
+> INSERT INTO t1 VALUES (5, NULL, 0);
+> INSERT INTO t1 VALUES (6, NULL, 1);
+> INSERT INTO t1 VALUES (7, NULL, NULL);
 
 > SELECT * FROM t1;
 ~~~
@@ -57,7 +53,7 @@ Any comparison between a value and `NULL` results in `NULL`. This behavior is co
 +---+---+---+
 ~~~
 ~~~ sql
-> SELECT * FROM t1 WHERE NOT b > 10;
+> SELECT * FROM t1 WHERE NOT (b > 10);
 ~~~
 ~~~
 +---+---+---+
@@ -95,7 +91,7 @@ Any comparison between a value and `NULL` results in `NULL`. This behavior is co
 +---+---+---+
 ~~~
 ~~~ sql
-> SELECT * FROM t1 WHERE NOT (b < 10 AND c = 1);
+> SELECT * FROM t1 WHERE NOT ((b < 10) AND (c = 1));
 ~~~
 ~~~
 +---+------+---+
@@ -107,7 +103,7 @@ Any comparison between a value and `NULL` results in `NULL`. This behavior is co
 +---+------+---+
 ~~~
 ~~~ sql
-> SELECT * FROM t1 WHERE NOT (c = 1 AND b < 10);
+> SELECT * FROM t1 WHERE NOT ((c = 1) AND (b < 10));
 ~~~
 ~~~
 +---+------+---+
@@ -138,7 +134,7 @@ Use the `IS NULL` or `IS NOT NULL` clauses when checking for `NULL` values.
 Arithmetic operations involving a `NULL` value will yield a `NULL` result.
 
 ~~~ sql
-> SELECT a, b, c, b*0, b*c, b+c FROM t1;
+> SELECT a, b, c, b * 0, b * c, b + c FROM t1;
 ~~~
 ~~~
 +---+------+------+-------+-------+-------+
@@ -175,7 +171,7 @@ Aggregate [functions](functions-and-operators.html) are those that operate on a 
 +---+------+------+
 ~~~
 ~~~ sql
-> SELECT COUNT(*), COUNT(b), SUM(b), AVG(b), MIN(b), MAX(b) FROM t1;
+> SELECT count(*), count(b), sum(b), avg(b), min(b), max(b) FROM t1;
 ~~~
 ~~~
 +----------+----------+--------+--------------------+--------+--------+
@@ -214,7 +210,7 @@ Note the following:
 However, counting the number of distinct values excludes `NULL`s, which is consistent with the `COUNT()` function.
 
 ~~~ sql
-> SELECT COUNT(DISTINCT b) FROM t1;
+> SELECT count(DISTINCT b) FROM t1;
 ~~~
 ~~~
 +-------------------+
@@ -231,7 +227,10 @@ In some cases, you may want to include `NULL` values in arithmetic or aggregate 
 For example, let's say you want to calculate the average value of column `b` as being the `SUM()` of all numbers in `b` divided by the total number of rows, regardless of whether `b`'s value is `NULL`. In this case, you would use `AVG(IFNULL(b, 0))`, where `IFNULL(b, 0)` substitutes a value of zero (0) for `NULL`s during the calculation.
 
 ~~~ sql
-> SELECT COUNT(*), COUNT(b), SUM(b), AVG(b), AVG(IFNULL(b, 0)), MIN(b), MAX(b) FROM t1;
+> SELECT
+  count(*), count(b), sum(b), avg(b), avg(IFNULL(b, 0)), min(b), max(b)
+FROM
+  t1;
 ~~~
 ~~~
 +----------+----------+--------+--------------------+--------------------+--------+--------+
@@ -303,11 +302,11 @@ Note that the `NULLS FIRST` and `NULLS LAST` options of the `ORDER BY` clause ar
 `NULL` values are not considered unique. Therefore, if a table has a Unique constraint on one or more columns that are optional (nullable), it is possible to insert multiple rows with `NULL` values in those columns, as shown in the example below.
 
 ~~~ sql
-> CREATE TABLE t2(a INT, b INT UNIQUE);
+> CREATE TABLE t2 (a INT, b INT UNIQUE);
 
-> INSERT INTO t2 VALUES(1, 1);
-> INSERT INTO t2 VALUES(2, NULL);
-> INSERT INTO t2 VALUES(3, NULL);
+> INSERT INTO t2 VALUES (1, 1);
+> INSERT INTO t2 VALUES (2, NULL);
+> INSERT INTO t2 VALUES (3, NULL);
 
 > SELECT * FROM t2;
 ~~~
@@ -326,7 +325,12 @@ Note that the `NULLS FIRST` and `NULLS LAST` options of the `ORDER BY` clause ar
 A [Check constraint](check.html) expression that evaluates to `NULL` is considered to pass, allowing for concise expressions like `discount < price` without worrying about adding `OR discount IS NULL` clauses. When non-null validation is desired, the usual Not Null constraint can be used along side a Check constraint.
 
 ~~~ sql
-> CREATE TABLE products (id STRING PRIMARY KEY, price INT NOT NULL CHECK (price > 0), discount INT, CHECK (discount <= price));
+> CREATE TABLE products (
+  id STRING PRIMARY KEY,
+  price INT NOT NULL CHECK (price > 0),
+  discount INT,
+  CHECK (discount <= price)
+);
 
 > INSERT INTO products (id, price) VALUES ('ncc-1701-d', 100);
 > INSERT INTO products (id, price, discount) VALUES ('ncc-1701-a', 100, 50);

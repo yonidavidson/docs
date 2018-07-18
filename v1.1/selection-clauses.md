@@ -88,7 +88,7 @@ shorter to type.
 
 {% include copy-clipboard.html %}
 ~~~sql
-> CREATE TABLE employee_copy AS TABLE employee;
+> CREATE TABLE employee_copy  AS TABLE employee;
 ~~~
 
 This statement copies the content from table `employee` into a new

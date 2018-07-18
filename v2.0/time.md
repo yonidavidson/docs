@@ -38,7 +38,7 @@ A `TIME` column supports values up to 8 bytes in width, but the total storage si
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE TABLE time (a INT PRIMARY KEY, b TIME);
+> CREATE TABLE "time" (a INT PRIMARY KEY, b TIME);
 ~~~
 
 {% include copy-clipboard.html %}
@@ -56,12 +56,12 @@ A `TIME` column supports values up to 8 bytes in width, but the total storage si
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> INSERT INTO time VALUES (1, TIME '05:40:00');
+> INSERT INTO "time" VALUES (1, TIME '05:40:00');
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM time;
+> SELECT * FROM "time";
 ~~~
 ~~~
 +---+---------------------------+

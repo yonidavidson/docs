@@ -158,7 +158,10 @@ character, or `%` to match any sequence of zero or more characters.
 For example:
 
 ~~~sql
-> SELECT 'monday' LIKE '%day' AS a, 'tuesday' LIKE 'tue_day' AS b, 'wednesday' ILIKE 'W%' AS c;
+> SELECT
+  'monday' LIKE '%day' AS a,
+  'tuesday' LIKE 'tue_day' AS b,
+  'wednesday' ILIKE 'W%' AS c;
 ~~~
 ~~~
 +------+------+------+
@@ -199,7 +202,10 @@ inside a string, not only at the beginning.
 For example:
 
 ~~~sql
-> SELECT 'monday' ~ 'onday' AS a, 'tuEsday' ~ 't[uU][eE]sday' AS b, 'wednesday' ~* 'W.*y' AS c;
+> SELECT
+  'monday' ~ 'onday' AS a,
+  'tuEsday' ~ 't[uU][eE]sday' AS b,
+  'wednesday' ~* 'W.*y' AS c;
 ~~~
 ~~~
 +------+------+------+
@@ -237,7 +243,10 @@ This is a mix of SQL `LIKE` patterns and POSIX regular expressions:
 For example:
 
 ~~~sql
-> SELECT 'monday' SIMILAR TO '_onday' AS a, 'tuEsday' SIMILAR TO 't[uU][eE]sday' AS b, 'wednesday' SIMILAR TO 'w%y' AS c;
+> SELECT
+  'monday' SIMILAR TO '_onday' AS a,
+  'tuEsday' SIMILAR TO 't[uU][eE]sday' AS b,
+  'wednesday' SIMILAR TO 'w%y' AS c;
 ~~~
 ~~~
 +------+------+------+
@@ -597,7 +606,7 @@ and then evaluates to the value of that single cell. Any [selection clause](sele
 For example:
 
 ~~~sql
-> SELECT (SELECT COUNT(*) FROM users) > (SELECT COUNT(*) FROM admins);
+> SELECT (SELECT count(*) FROM users) > (SELECT count(*) FROM admins);
 ~~~
 
 returns `TRUE` if there are more rows in table `users` than in table
@@ -621,7 +630,7 @@ Evaluates to an array containing the specified values.
 For example:
 
 ~~~sql
-> SELECT ARRAY[1,2,3] AS a;
+> SELECT ARRAY[1, 2, 3] AS a;
 ~~~
 ~~~
 +---------+
@@ -639,7 +648,7 @@ all the values are `NULL`, then the type of the array must be
 specified explicitly using a type annotation. For example:
 
 ~~~sql
-> SELECT ARRAY[]:::int[];
+> SELECT ARRAY[]:::INT[];
 ~~~
 
 #### Typing rule
