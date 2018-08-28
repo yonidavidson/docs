@@ -203,13 +203,13 @@ Create appropriate zone configurations:
 {% include copy-clipboard.html %}
 ~~~ shell
 $ cat > north_america.zone.yml
-constraints: [+datacenter=us1]
+constraints: [+datacenter=us-1]
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ shell
 $ cat > australia.zone.yml
-constraints: [+datacenter=au1]
+constraints: [+datacenter=aus-1]
 ~~~
 
 Apply zone configurations to corresponding partitions:
