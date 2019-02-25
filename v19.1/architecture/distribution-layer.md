@@ -142,7 +142,7 @@ Let's imagine we have an alphabetically sorted column, which we use for lookups.
 Key-value data, which represents the data in your tables using the following structure:
 
 ~~~
-/<table Id>/<index id>/<indexed column values> -> <non-indexed/STORING column values>
+/<table Id>/<index id>/<indexed column values> -> <non-indexed/COVERING column values>
 ~~~
 
 The table itself is stored with an `index_id` of 1 for its `PRIMARY KEY` columns, with the rest of the columns in the table considered as stored/covered columns.

@@ -53,7 +53,7 @@ To maximize your indexes' performance, we recommend following a few [best practi
 We recommend creating indexes for all of your common queries. To design the most useful indexes, look at each query's `WHERE` and `FROM` clauses, and create indexes that:
 
 - [Index all columns](#indexing-columns) in the `WHERE` clause.
-- [Store columns](#storing-columns) that are _only_ in the `FROM` clause.
+- [Covering columns](#covering-columns) that are _only_ in the `FROM` clause.
 
 ### Indexing columns
 
@@ -64,11 +64,11 @@ When designing indexes, it's important to consider which columns you index and t
 - Columns filtered in the `WHERE` clause with the equality operators (`=` or `IN`) should come first in the index, before those referenced with inequality operators (`<`, `>`).
 - Indexes of the same columns in different orders can produce different results for each query. For more information, see [our blog post on index selection](https://www.cockroachlabs.com/blog/index-selection-cockroachdb-2/)&mdash;specifically the section "Restricting the search space."
 
-### Storing columns
+### Covering columns
 
-Storing a column optimizes the performance of queries that retrieve its values (i.e., in the `FROM` clause) but do not filter them. This is because indexing values is only useful when they're filtered, but it's still faster for SQL to retrieve values in the index it's already scanning rather than reaching back to the table itself.
+Covering a column optimizes the performance of queries that retrieve its values (i.e., in the `FROM` clause) but do not filter them. This is because indexing values is only useful when they're filtered, but it's still faster for SQL to retrieve values in the index it's already scanning rather than reaching back to the table itself.
 
-However, for SQL to use stored columns, queries must filter another column in the same index.
+However, for SQL to use covered columns, queries must filter another column in the same index.
 
 ### Example
 
@@ -84,11 +84,11 @@ If you wanted to optimize the performance of the following queries:
 > SELECT col1, col2, col3 FROM tbl WHERE col1 = 10 AND col2 > 1;
 ~~~
 
-You could create a single index of `col1` and `col2` that stores `col3`:
+You could create a single index of `col1` and `col2` that covers `col3`:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE INDEX ON tbl (col1, col2) STORING (col3);
+> CREATE INDEX ON tbl (col1, col2) COVERING (col3);
 ~~~
 
 ## See also

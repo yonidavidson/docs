@@ -42,7 +42,7 @@ Field | Description
 `seq_in_index` | The position of the column in the index, starting with 1.
 `column_name` | The indexed column.
 `direction` | How the column is sorted in the index. Possible values: `ASC` or `DESC` for indexed columns; `N/A` for stored columns.
-`storing` | Whether or not the `STORING` clause was used to index the column during [index creation](create-index.html). Possible values: `true` or `false`.
+`storing` | Whether or not the value is considered "covered"/"stored". Covering/storing columns are written to the index, but their values are not sorted. For more information, see [`CREATE INDEX`: Covering columns](create-index.html#covering-columns).<br/><br/> Possible values: `true` or `false`.
 `implicit` | Whether or not the column is part of the index despite not being explicitly included during [index creation](create-index.html). Possible values: `true` or `false`<br><br>At this time, [primary key](primary-key.html) columns are the only columns that get implicitly included in secondary indexes. The inclusion of primary key columns improves performance when retrieving columns not in the index.
 
 ## Example
@@ -59,7 +59,7 @@ Field | Description
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE INDEX b_c_idx ON t1 (b, c) STORING (d);
+> CREATE INDEX b_c_idx ON t1 (b, c) COVERING (d);
 ~~~
 
 {% include copy-clipboard.html %}
@@ -79,6 +79,10 @@ Field | Description
 +------------+------------+------------+--------------+-------------+-----------+---------+----------+
 (5 rows)
 ~~~
+
+{{site.data.alerts.callout_info}}
+`COVERING` and `STORING` are synonymous with respect to indexes. Some of CockroachDB's UI refers to "storing" columns, which is exactly equivalent to covering those columns.
+{{site.data.alerts.end}}
 
 ## See also
 

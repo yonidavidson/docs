@@ -41,7 +41,7 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
 `table_name` | The name of the table you want to create the index on.
 `column_name` | The name of the column you want to index.
 `ASC` or `DESC`| Sort the column in ascending (`ASC`) or descending (`DESC`) order in the index. How columns are sorted affects query results, particularly when using `LIMIT`.<br><br>__Default:__ `ASC`
-`STORING ...`| Store (but do not sort) each column whose name you include. Note that columns that are part of a table's [`PRIMARY KEY`](primary-key.html) cannot be specified as `STORING` columns in secondary indexes on the table.<br><br>For information on when to use `STORING`, see  [Store Columns](#store-columns).<br><br>`COVERING` aliases `STORING` and works identically.
+`COVERING ...`| Store (but do not sort) named columns in the index. Note that columns that are part of a table's [`PRIMARY KEY`](primary-key.html) cannot be specified as `COVERING` columns in secondary indexes on the table.<br><br>For information on when to use `COVERING`, see  [Covering Columns](#covering-columns).<br><br>`STORING` is an alis for `COVERING`.
 `opt_interleave` | You can potentially optimize query performance by [interleaving indexes](interleave-in-parent.html), which changes how CockroachDB stores your data.
 `opt_partition_by` | Docs coming soon.
 
@@ -108,16 +108,16 @@ The above example is equivalent to the following PostgreSQL-compatible syntax:
 > CREATE INDEX ON users USING GIN (profile);
 ~~~
 
-### Store columns
+### Covering columns
 
-Storing a column improves the performance of queries that retrieve (but don’t filter) its values.
+Covering a column improves the performance of queries that retrieve (but don’t filter) its values.
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE INDEX ON products (price) STORING (name);
+> CREATE INDEX ON products (price) COVERING (name);
 ~~~
 
-However, to use stored columns, queries must filter another column in the same index. For example, SQL can retrieve `name` values from the above index only when a query's `WHERE` clause filters `price`.
+However, to use covering columns, queries must filter another column in the same index. For example, SQL can retrieve `name` values from the above index only when a query's `WHERE` clause filters `price`.
 
 ### Change column sort order
 

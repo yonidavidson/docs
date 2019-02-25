@@ -92,43 +92,43 @@ As mentioned above, before beginning, it's useful to collect each instance's int
 3. Create the CA certificate and key:
 
     {% include copy-clipboard.html %}
-  	~~~ shell
-  	$ cockroach cert create-ca \
-  	{{page.certs}} \
-  	--ca-key=my-safe-directory/ca.key
-  	~~~
+    ~~~ shell
+    $ cockroach cert create-ca \
+    {{page.certs}} \
+    --ca-key=my-safe-directory/ca.key
+    ~~~
 
 4. Create the certificate and key for the first node, issued to all common names you might use to refer to the node:
 
     {% include copy-clipboard.html %}
-  	~~~ shell
-  	$ cockroach cert create-node \
-  	<node1 internal IP address> \
-  	<node1 external IP address> \
-  	<node1 hostname>  \
-  	<other common names for node1> \
-  	localhost \
-  	127.0.0.1 \
-  	{{page.certs}} \
-  	--ca-key=my-safe-directory/ca.key
-  	~~~
+    ~~~ shell
+    $ cockroach cert create-node \
+    <node1 internal IP address> \
+    <node1 external IP address> \
+    <node1 hostname>  \
+    <other common names for node1> \
+    localhost \
+    127.0.0.1 \
+    {{page.certs}} \
+    --ca-key=my-safe-directory/ca.key
+    ~~~
 
 5. Upload certificates to the first instance:
 
     {% include copy-clipboard.html %}
-  	~~~ shell
-  	# Create the certs directory:
-  	$ ssh <username>@<node1 address> "mkdir certs"
-  	~~~
+    ~~~ shell
+    # Create the certs directory:
+    $ ssh <username>@<node1 address> "mkdir certs"
+    ~~~
 
-  	{% include copy-clipboard.html %}
-  	~~~ shell
-  	# Upload the CA certificate and node certificate and key:
-  	$ scp certs/ca.crt \
-  	certs/node.crt \
-  	certs/node.key \
-  	<username>@<node1 address>:~/certs
-  	~~~
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    # Upload the CA certificate and node certificate and key:
+    $ scp certs/ca.crt \
+    certs/node.crt \
+    certs/node.key \
+    <username>@<node1 address>:~/certs
+    ~~~
 
 6. Delete the local copy of the node certificate and key:
 
@@ -144,46 +144,46 @@ As mentioned above, before beginning, it's useful to collect each instance's int
 7. Create the certificate and key for the second node, issued to all common names you might use to refer to the node:
 
     {% include copy-clipboard.html %}
-  	~~~ shell
-  	$ cockroach cert create-node \
-  	<node2 internal IP address> \
-  	<node2 external IP address> \
-  	<node2 hostname>  \
-  	<other common names for node2> \
-  	localhost \
-  	127.0.0.1 \
-  	{{page.certs}} \
-  	--ca-key=my-safe-directory/ca.key
-  	~~~
+    ~~~ shell
+    $ cockroach cert create-node \
+    <node2 internal IP address> \
+    <node2 external IP address> \
+    <node2 hostname>  \
+    <other common names for node2> \
+    localhost \
+    127.0.0.1 \
+    {{page.certs}} \
+    --ca-key=my-safe-directory/ca.key
+    ~~~
 
 8. Upload certificates to the second instance:
 
     {% include copy-clipboard.html %}
-  	~~~ shell
-  	# Create the certs directory:
-  	$ ssh <username>@<node2 address> "mkdir certs"
-  	~~~
+    ~~~ shell
+    # Create the certs directory:
+    $ ssh <username>@<node2 address> "mkdir certs"
+    ~~~
 
-  	{% include copy-clipboard.html %}
-  	~~~ shell
-  	# Upload the CA certificate and node certificate and key:
-  	$ scp certs/ca.crt \
-  	certs/node.crt \
-  	certs/node.key \
-  	<username>@<node2 address>:~/certs
-  	~~~
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    # Upload the CA certificate and node certificate and key:
+    $ scp certs/ca.crt \
+    certs/node.crt \
+    certs/node.key \
+    <username>@<node2 address>:~/certs
+    ~~~
 
 9. Repeat steps 6 - 8 for the third node.
 
 10. Create a client certificate and key for the `root` user:
 
     {% include copy-clipboard.html %}
-  	~~~ shell
-  	$ cockroach cert create-client \
-  	root \
-  	{{page.certs}} \
-  	--ca-key=my-safe-directory/ca.key
-  	~~~
+    ~~~ shell
+    $ cockroach cert create-client \
+    root \
+    {{page.certs}} \
+    --ca-key=my-safe-directory/ca.key
+    ~~~
 
 11. Upload certificates to the fourth instance, the one from which you will run a sample workload:
 
@@ -257,7 +257,7 @@ When measuring SQL performance, it's best to run a given statement multiple time
 - [Filtering by the primary key](#filtering-by-the-primary-key)
 - [Filtering by a non-indexed column (full table scan)](#filtering-by-a-non-indexed-column-full-table-scan)
 - [Filtering by a secondary index](#filtering-by-a-secondary-index)
-- [Filtering by a secondary index storing additional columns](#filtering-by-a-secondary-index-storing-additional-columns)
+- [Filtering by a secondary index covering additional columns](#filtering-by-a-secondary-index-covering-additional-columns)
 - [Joining data from different tables](#joining-data-from-different-tables)
 - [Using `IN (list)` with a subquery](#using-in-list-with-a-subquery)
 - [Using `IN (list)` with explicit values](#using-in-list-with-explicit-values)
@@ -422,9 +422,13 @@ This shows you that CockroachDB starts with the secondary index (`table | users@
 
 Thinking back to the [earlier discussion of ranges and leaseholders](#important-concepts), because the `users` table is small (under 64 MiB), the primary index and all secondary indexes are contained in a single range with a single leaseholder. If the table were bigger, however, the primary index and secondary index could reside in separate ranges, each with its own leaseholder. In this case, if the leaseholders were on different nodes, the query would require more network hops, further increasing latency.
 
-#### Filtering by a secondary index storing additional columns
+#### Filtering by a secondary index covering additional columns
 
-When you have a query that filters by a specific column but retrieves a subset of the table's total columns, you can improve performance by [storing](indexes.html#storing-columns) those additional columns in the secondary index to prevent the query from needing to scan the primary index as well.
+When you have a query that filters by a specific column but retrieves a subset of the table's total columns, you can improve performance by [covering](indexes.html#covering-columns) those additional columns in the secondary index to prevent the query from needing to scan the primary index as well.
+
+{{site.data.alerts.callout_info}}
+`COVERING` and `STORING` are synonymous with respect to indexes. Some of CockroachDB's UI refers to "storing" columns, which is exactly equivalent to covering those columns.
+{{site.data.alerts.end}}
 
 For example, let's say you frequently retrieve a user's name and credit card number:
 
@@ -472,7 +476,7 @@ $ cockroach sql \
 (6 rows)
 ~~~
 
-Let's drop and recreate the index on `name`, this time storing the `credit_card` value in the index:
+Let's drop and recreate the index on `name`, this time covering the `credit_card` value in the index:
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -489,10 +493,10 @@ $ cockroach sql \
 {{page.certs}} \
 --host=<address of any node> \
 --database=movr \
---execute="CREATE INDEX ON users (name) STORING (credit_card);"
+--execute="CREATE INDEX ON users (name) COVERING (credit_card);"
 ~~~
 
-Now that `credit_card` values are stored in the index on `name`, CockroachDB only needs to scan that index:
+Now that `credit_card` values are covered in the index on `name`, CockroachDB only needs to scan that index:
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -512,7 +516,7 @@ $ cockroach sql \
 (3 rows)
 ~~~
 
-This results in even faster performance, reducing latency from 1.77ms (index without storing) to 0.99ms (index with storing):
+This results in even faster performance, reducing latency from 1.77ms (index without covering) to 0.99ms (index with covering):
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -647,7 +651,7 @@ The results above tell us:
 - The `rides` table is split across 7 ranges, with six leaseholders on node 2 and one leaseholder on node 1.
 - The `users` table is just a single range with its leaseholder on node 2.
 
-Now, given the `WHERE` condition of the join, the full table scan of `rides`, across all of its 7 ranges, is particularly wasteful. To speed up the query, you can create a secondary index on the `WHERE` condition (`rides.start_time`) storing the join key (`rides.rider_id`):
+Now, given the `WHERE` condition of the join, the full table scan of `rides`, across all of its 7 ranges, is particularly wasteful. To speed up the query, you can create a secondary index on the `WHERE` condition (`rides.start_time`) covering the join key (`rides.rider_id`):
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -655,7 +659,7 @@ $ cockroach sql \
 {{page.certs}} \
 --host=<address of any node> \
 --database=movr \
---execute="CREATE INDEX ON rides (start_time) STORING (rider_id);"
+--execute="CREATE INDEX ON rides (start_time) COVERING (rider_id);"
 ~~~
 
 {{site.data.alerts.callout_info}}
@@ -994,7 +998,7 @@ $ cockroach sql \
 (6 rows)
 ~~~
 
-This table has the primary index (the full table) and a secondary index on `name` that is also storing `credit_card`. This means that whenever a row is inserted, or whenever `name`, `credit_card`, `city`, or `id` are modified in existing rows, both indexes are updated.
+This table has the primary index (the full table) and a secondary index on `name` that is also covering `credit_card`. This means that whenever a row is inserted, or whenever `name`, `credit_card`, `city`, or `id` are modified in existing rows, both indexes are updated.
 
 To make this more concrete, let's count how many rows have a name that starts with `C` and then update those rows to all have the same name:
 
@@ -1170,34 +1174,34 @@ Given that Movr is active on both US coasts, you'll now scale the cluster into t
 1. On your local machine, where you generated certificates for your first nodes, create the certificate and key for one of the new nodes, issued to all common names you might use to refer to the node:
 
     {% include copy-clipboard.html %}
-  	~~~ shell
-  	$ cockroach cert create-node \
-  	<node internal IP address> \
-  	<node external IP address> \
-  	<node hostname>  \
-  	<other common names for node> \
-  	localhost \
-  	127.0.0.1 \
-  	{{page.certs}} \
-  	--ca-key=my-safe-directory/ca.key
-  	~~~
+    ~~~ shell
+    $ cockroach cert create-node \
+    <node internal IP address> \
+    <node external IP address> \
+    <node hostname>  \
+    <other common names for node> \
+    localhost \
+    127.0.0.1 \
+    {{page.certs}} \
+    --ca-key=my-safe-directory/ca.key
+    ~~~
 
 2. Upload certificates to the instance:
 
     {% include copy-clipboard.html %}
-  	~~~ shell
-  	# Create the certs directory:
-  	$ ssh <username>@<node address> "mkdir certs"
-  	~~~
+    ~~~ shell
+    # Create the certs directory:
+    $ ssh <username>@<node address> "mkdir certs"
+    ~~~
 
-  	{% include copy-clipboard.html %}
-  	~~~ shell
-  	# Upload the CA certificate and node certificate and key:
-  	$ scp certs/ca.crt \
-  	certs/node.crt \
-  	certs/node.key \
-  	<username>@<node address>:~/certs
-  	~~~
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    # Upload the CA certificate and node certificate and key:
+    $ scp certs/ca.crt \
+    certs/node.crt \
+    certs/node.key \
+    <username>@<node address>:~/certs
+    ~~~
 
 3. Delete the local copy of the node certificate and key:
 
