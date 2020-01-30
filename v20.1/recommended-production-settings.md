@@ -7,14 +7,42 @@ toc_not_nested: true
 
 This page provides important recommendations for production deployments of CockroachDB.
 
+<div class="filters filters-big clearfix">
+    <button class="filter-button" data-scope="manual">Manual</button>
+    <button class="filter-button" data-scope="kubernetes">Kubernetes</button>
+</div>
+
 ## Topology
 
 When planning your deployment, it's important to carefully review and choose the [topology patterns](topology-patterns.html) that best meet your latency and resiliency requirements. This is especially crucial for multi-region deployments.
 
+<section class="filter-content" markdown="1" data-scope="manual">
 Also keep in mind some basic topology recommendations:
 
 {% include {{ page.version.version }}/prod-deployment/topology-recommendations.md %}
+</section>
 
+<section class="filter-content" markdown="1" data-scope="kubernetes">
+Also follow these recommendations for Kubernetes deployments:
+
+- Run each CockroachDB node on a separate [Kubernetes node](#kubernetes-nodes). Since CockroachDB replicates across nodes, running more than one CockroachDB node per machine increases the risk of data loss if a machine fails.
+
+- When deploying in a single region:
+    - Set up a single Kubernetes cluster with at least 3 availability zones. The exact method will depend on the cloud provider you use.
+    - Each cluster should have at least 3 pods, each running a CockroachDB node. The Kubernetes scheduler will distribute the pods across the AZs. 
+
+- When deploying in multiple regions:
+    - To be able to tolerate the failure of 1 entire region, use at least 3 regions.
+    - To be able to tolerate the failure of 1 entire AZ in a region, use at least 3 AZs per region.
+    - Set up a separate Kubernetes cluster for each geographic region, each with at least 3 AZs. The exact method will depend on the cloud provider you use.
+    - Each cluster should have at least 3 pods, each running a CockroachDB node. The Kubernetes scheduler will distribute the pods across the AZs. 
+
+{{site.data.alerts.callout_info}}
+By default, our [StatefulSet configuration](https://github.com/cockroachdb/cockroach/tree/master/cloud/kubernetes) and [Helm chart](https://github.com/helm/charts/tree/master/stable/cockroachdb) create 3 pods per Kubernetes cluster. You can [modify this value](#modifying-the-default-configuration) for a new or existing cluster.
+{{site.data.alerts.end}}
+</section>
+
+<section class="filter-content" markdown="1" data-scope="manual">
 ## Hardware
 
 {{site.data.alerts.callout_info}}
@@ -35,7 +63,7 @@ Nodes should have sufficient CPU, RAM, network, and storage capacity to handle y
 
 - To optimize for throughput, use larger nodes, up to 32 vCPUs. Based on internal testing results, 32 vCPUs is the sweet spot for OLTP workloads. For RAM, aim for a ratio of 2 GB per vCPU.
 
-    To increase throughput further, add more nodes to the cluster instead of increasing node size; higher vCPUs will have NUMA](https://en.wikipedia.org/wiki/Non-uniform_memory_access)(non-uniform memory access) implications.
+    To increase throughput further, add more nodes to the cluster instead of increasing node size; higher vCPUs will have [NUMA](https://en.wikipedia.org/wiki/Non-uniform_memory_access) (non-uniform memory access) implications.
 
 - To optimize for resiliency, use many smaller nodes (e.g., 4 vCPUs per node) instead of fewer larger ones. Recovery from a failed node is faster when data is spread across more nodes.
 
@@ -60,6 +88,68 @@ Nodes should have sufficient CPU, RAM, network, and storage capacity to handle y
     This is especially recommended if you are using local disks with no RAID protection rather than a cloud provider's network-attached disks that are often replicated under the hood, because local disks have a greater risk of failure. You can do this for the [entire cluster](configure-replication-zones.html#edit-the-default-replication-zone) or for specific [databases](configure-replication-zones.html#create-a-replication-zone-for-a-database), [tables](configure-replication-zones.html#create-a-replication-zone-for-a-table), or [rows](configure-replication-zones.html#create-a-replication-zone-for-a-partition) (enterprise-only).
 
 - The optimal configuration for striping more than one device is [RAID 10](https://en.wikipedia.org/wiki/Nested_RAID_levels#RAID_10_(RAID_1+0)). RAID 0 and 1 are also acceptable from a performance perspective.
+</section>
+
+<section class="filter-content" markdown="1" data-scope="kubernetes">
+## Kubernetes nodes
+
+A Kubernetes node is a physical or virtual machine that can run a CockroachDB node on a pod, which is a group of Docker containers.
+
+### Basic resource recommendations
+
+Kubernetes nodes should have sufficient CPU, RAM, network, and storage capacity to handle your workload. When creating Kubernetes clusters, it's important to specify machine types that are appropriate to your deployment scenario. See our [cloud-specific recommendations](#cloud-specific-recommendations).
+
+#### CPU and memory
+
+{{site.data.alerts.callout_info}}
+One "CPU" in Kubernetes is equivalent to 1 AWS vCPU, 1 GCP Core, 1 Azure vCore, or 1 Hyperthread.
+{{site.data.alerts.end}}
+
+- Machines with more CPU generally allow greater throughput. Because Kubernetes runs a set of processes on every machine in a cluster, having fewer large machines is typically more beneficial to performance than having more small machines.
+
+- At a bare minimum, each machine should have **1 CPU and 2 GB of RAM**. More data, complex workloads, higher concurrency, and faster performance require additional resources.
+
+    {{site.data.alerts.callout_danger}}
+    Avoid "burstable" or "shared-core" virtual machines that limit the load on CPU resources.
+    {{site.data.alerts.end}}
+
+- To optimize for throughput, use larger machines, up to 32 CPUs. Based on internal testing results, 32 CPUs is the sweet spot for OLTP workloads. For RAM, aim for a ratio of 2 GB per CPU. Adding more CPU is usually more beneficial than adding more RAM.
+
+    To increase throughput further, [add more machines to the cluster](tk) instead of increasing machine size; higher CPUs will have [NUMA](https://en.wikipedia.org/wiki/Non-uniform_memory_access) (non-uniform memory access) implications.
+
+- To optimize for resiliency, use many smaller machines (e.g., 4 CPUs per machine) instead of fewer larger ones. Recovery from a failed machine is faster when data is spread across more machines.
+
+- In all cases, make sure CockroachDB nodes are uniform to ensure consistent SQL performance.
+
+#### Storage
+
+When using StatefulSets tktk attach a persistent volume to the pod.
+
+DaemonSets allow you to utilize the machine's local disk tktk
+
+tktk
+- Resize the cluster and edit your StatefulSet configuration to increase the replication factor from 3 (the default) to 5. This is especially recommended if you are using local disks rather than a cloud providers' network-attached disks that are often replicated underneath the covers, because local disks have a greater risk of failure. You can do this for the entire cluster or for specific databases or tables.
+
+- The recommended Linux filesystem is [ext4](https://ext4.wiki.kernel.org/index.php/Main_Page).
+
+- Avoid using shared storage such as NFS, CIFS, and CEPH storage.
+
+- For the best performance results, use SSD or NVMe devices. The recommended volume size is 300-500 GB.
+
+    Monitor IOPS for higher service times. If they exceed 1-5 ms, you will need to add more devices or expand the cluster to reduce the disk latency. To monitor IOPS, use tools such as `iostat` (part of `sysstat`).
+
+- To calculate IOPS, use [sysbench](https://github.com/akopytov/sysbench). If IOPS decrease, add more nodes to your cluster to increase IOPS.
+
+- Place a [ballast file](cockroach-debug-ballast.html) in each node's storage directory. In the unlikely case that a node runs out of disk space and shuts down, you can delete the ballast file to free up enough space to be able to restart the node.
+
+- Use [zone configs](configure-replication-zones.html) to increase the replication factor from 3 (the default) to 5 (across at least 5 nodes).
+
+    This is especially recommended if you are using local disks with no RAID protection rather than a cloud provider's network-attached disks that are often replicated under the hood, because local disks have a greater risk of failure. You can do this for the [entire cluster](configure-replication-zones.html#edit-the-default-replication-zone) or for specific [databases](configure-replication-zones.html#create-a-replication-zone-for-a-database), [tables](configure-replication-zones.html#create-a-replication-zone-for-a-table), or [rows](configure-replication-zones.html#create-a-replication-zone-for-a-partition) (enterprise-only).
+
+- The optimal configuration for striping more than one device is [RAID 10](https://en.wikipedia.org/wiki/Nested_RAID_levels#RAID_10_(RAID_1+0)). RAID 0 and 1 are also acceptable from a performance perspective.
+
+
+</section>
 
 ### Cloud-specific recommendations
 
