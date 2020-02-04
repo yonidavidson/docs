@@ -27,11 +27,11 @@ Also follow these recommendations for Kubernetes deployments:
 
 - Run each CockroachDB node on a separate [Kubernetes node](#kubernetes-nodes). Since CockroachDB replicates across nodes, running more than one CockroachDB node per machine increases the risk of data loss if a machine fails.
 
-- When deploying in a single region:
+- When [deploying in a single region](orchestrate-cockroachdb-with-kubernetes.html):
     - Set up a single Kubernetes cluster with at least 3 availability zones. The exact method will depend on the cloud provider you use.
     - Each cluster should have at least 3 pods, each running a CockroachDB node. The Kubernetes scheduler will distribute the pods across the AZs. 
 
-- When deploying in multiple regions:
+- When [deploying in multiple regions](orchestrate-cockroachdb-with-kubernetes-multi-cluster.html):
     - To be able to tolerate the failure of 1 entire region, use at least 3 regions.
     - To be able to tolerate the failure of 1 entire AZ in a region, use at least 3 AZs per region.
     - Set up a separate Kubernetes cluster for each geographic region, each with at least 3 AZs. The exact method will depend on the cloud provider you use.
@@ -123,18 +123,151 @@ One "CPU" in Kubernetes is equivalent to 1 AWS vCPU, 1 GCP Core, 1 Azure vCore, 
 
 #### Storage
 
-When using StatefulSets tktk attach a persistent volume to the pod.
+Our Kubernetes deployment guides tk the [Helm](https://helm.sh/) package manager and manual configurations. Both methods use a [StatefulSet](http://kubernetes.io/docs/concepts/abstractions/controllers/statefulsets/), a group of pods treated as stateful units attached to persistent volumes (e.g., Persistent Disk on GCE, Elastic Block Store on AWS).
 
-DaemonSets allow you to utilize the machine's local disk tktk
+ binds back to the same persistent storage on restart.
 
-tktk
-- Resize the cluster and edit your StatefulSet configuration to increase the replication factor from 3 (the default) to 5. This is especially recommended if you are using local disks rather than a cloud providers' network-attached disks that are often replicated underneath the covers, because local disks have a greater risk of failure. You can do this for the entire cluster or for specific databases or tables.
+It's convenient to run CockroachDB in a `StatefulSet`, using auto-provisioned remotely attached disks
+
+
+- external persistent volumes are often replicated by the cloud provider. Because CockroachDB already replicates data automatically, this additional layer of replication is unnecessary and can negatively impact performance. High-performance use cases on a private Kubernetes cluster may want to consider a DaemonSet deployment until StatefulSets support node-local storage.
+
+
+Tk [local disks](#local-disks)
+
+
+
+Kubernetes 
 
 - The recommended Linux filesystem is [ext4](https://ext4.wiki.kernel.org/index.php/Main_Page).
 
 - Avoid using shared storage such as NFS, CIFS, and CEPH storage.
 
-- For the best performance results, use SSD or NVMe devices. The recommended volume size is 300-500 GB.
+Our provided configuration does not specify what type of disks it wants, so in most environments Kubernetes will auto-provision disks of the default type. In the common cloud environments (AWS, GCP, Azure) this means you'll get slow disks that aren't optimized for database workloads (e.g., HDDs on GCE, SSDs without provisioned IOPS on AWS). However, we strongly recommend using SSDs for the best performance.
+
+- For the best performance results, use SSD or NVMe devices instead of HDDs. The recommended volume size is 300-500 GB. tktk we default to 100
+
+
+#### Creating a different disk type
+
+Kubernetes exposes the disk types used by its volume provisioner via its [`StorageClass` API object](https://kubernetes.io/docs/concepts/storage/storage-classes/). Each cloud environment has its own default `StorageClass`, but you can easily change the default or create a new named class which you can then ask for when asking for volumes. To do this, pick the type of volume provisioner you want to use from the list in the [Kubernetes documentation](https://kubernetes.io/docs/concepts/storage/storage-classes/), take the example YAML file they provide, modify it to have the disk type you want, then run `kubectl create -f <your-storage-class-file.yaml>`. For example, in order to use the `pd-ssd` disk type on Google Compute Engine or Google Kubernetes Engine, you can use a `StorageClass` file like this:
+
+~~~ yaml
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: <your-ssd-class-name>
+provisioner: kubernetes.io/gce-pd
+parameters:
+  type: pd-ssd
+~~~
+
+You can then use this new disk type either by configuring the CockroachDB YAML file to request it or by making it the default. You may also want to set additional parameters as documented in the list of Kubernetes storage classes, such as configuring the `iopsPerGB` if you're creating a `StorageClass` for AWS's `io1` Provisioned IOPS volume type.
+
+#### Configuring the disk type used by CockroachDB
+
+To use a new `StorageClass` without making it the default in your cluster, you have to modify your application's YAML file to ask for it. In the CockroachDB `StatefulSet` configuration, that means adding a line to its `VolumeClaimTemplates` section. For example, that would mean taking these lines of the CockroachDB config file:
+
+~~~ yaml
+  volumeClaimTemplates:
+  - metadata:
+      name: datadir
+    spec:
+      accessModes:
+        - "ReadWriteOnce"
+      resources:
+        requests:
+          storage: 1Gi
+~~~
+
+And adding a `storageClassName` field to the `spec`, changing them to:
+
+~~~ yaml
+  volumeClaimTemplates:
+  - metadata:
+      name: datadir
+    spec:
+      accessModes:
+        - "ReadWriteOnce"
+      storageClassName: <your-ssd-class-name>
+      resources:
+        requests:
+          storage: 1Gi
+~~~
+
+If you make this change then run `kubectl create -f` on your YAML file, Kubernetes should create volumes for you using your new `StorageClass`.
+
+#### Changing the default disk type
+
+If you want your new `StorageClass` to be the default for all volumes in your cluster, you have to run a couple of commands to inform Kubernetes of what you want. First, get the names of your `StorageClass`es. Then remove the current default and add yours as the new default.
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ kubectl get storageclasses
+~~~
+
+~~~
+NAME                 PROVISIONER
+ssd                  kubernetes.io/gce-pd
+standard (default)   kubernetes.io/gce-pd
+~~~
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ kubectl patch storageclass standard -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"false"}}}'
+~~~
+
+~~~
+storageclass "standard" patched
+~~~
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ kubectl patch storageclass ssd -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}'
+~~~
+
+~~~
+storageclass "ssd" patched
+~~~
+
+Note that if you are running an older version of Kubernetes, you may need to use a beta version of the annotation instead of the form used above. In particular, on v1.8 of Kubernetes you need to use `storageclass.beta.kubernetes.io/is-default-class`. To determine for sure which to use, run `kubectl describe storageclass` and copy the annotation used by the current default.
+
+### Disk size
+
+On some cloud providers (notably including all GCP disks and the AWS io1 disk type), the number of IOPS available to a disk is directly correlated to the size of the disk. In such cases, increasing the size of your disks can make for significantly better CockroachDB performance, as well as less risk of filling them up. Doing so is easy -- before you create your CockroachDB cluster, modify the `VolumeClaimTemplate` in the CockroachDB YAML file to ask for more space. For example, to give each CockroachDB instance 1TB of disk space, you'd change:
+
+~~~ yaml
+  volumeClaimTemplates:
+  - metadata:
+      name: datadir
+    spec:
+      accessModes:
+        - "ReadWriteOnce"
+      resources:
+        requests:
+          storage: 1Gi
+~~~
+
+To instead be:
+
+~~~ yaml
+  volumeClaimTemplates:
+  - metadata:
+      name: datadir
+    spec:
+      accessModes:
+        - "ReadWriteOnce"
+      resources:
+        requests:
+          storage: 1024Gi
+~~~
+
+Since [GCE disk IOPS scale linearly with disk size](https://cloud.google.com/compute/docs/disks/performance#type_comparison), a 1TiB disk gives 1024 times as many IOPS as a 1GiB disk, which can make a very large difference for write-heavy workloads.
+
+
+
+
+
 
     Monitor IOPS for higher service times. If they exceed 1-5 ms, you will need to add more devices or expand the cluster to reduce the disk latency. To monitor IOPS, use tools such as `iostat` (part of `sysstat`).
 
@@ -145,6 +278,8 @@ tktk
 - Use [zone configs](configure-replication-zones.html) to increase the replication factor from 3 (the default) to 5 (across at least 5 nodes).
 
     This is especially recommended if you are using local disks with no RAID protection rather than a cloud provider's network-attached disks that are often replicated under the hood, because local disks have a greater risk of failure. You can do this for the [entire cluster](configure-replication-zones.html#edit-the-default-replication-zone) or for specific [databases](configure-replication-zones.html#create-a-replication-zone-for-a-database), [tables](configure-replication-zones.html#create-a-replication-zone-for-a-table), or [rows](configure-replication-zones.html#create-a-replication-zone-for-a-partition) (enterprise-only).
+- Scale your cluster.
+
 
 - The optimal configuration for striping more than one device is [RAID 10](https://en.wikipedia.org/wiki/Nested_RAID_levels#RAID_10_(RAID_1+0)). RAID 0 and 1 are also acceptable from a performance perspective.
 

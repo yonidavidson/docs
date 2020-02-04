@@ -68,7 +68,7 @@ To use a new `StorageClass` without making it the default in your cluster, you h
         - "ReadWriteOnce"
       resources:
         requests:
-          storage: 1Gi
+          storage: 100Gi
 ~~~
 
 And adding a `storageClassName` field to the `spec`, changing them to:
@@ -83,7 +83,7 @@ And adding a `storageClassName` field to the `spec`, changing them to:
       storageClassName: <your-ssd-class-name>
       resources:
         requests:
-          storage: 1Gi
+          storage: 100Gi
 ~~~
 
 If you make this change then run `kubectl create -f` on your YAML file, Kubernetes should create volumes for you using your new `StorageClass`.
@@ -136,7 +136,7 @@ On some cloud providers (notably including all GCP disks and the AWS io1 disk ty
         - "ReadWriteOnce"
       resources:
         requests:
-          storage: 1Gi
+          storage: 100Gi
 ~~~
 
 To instead be:
