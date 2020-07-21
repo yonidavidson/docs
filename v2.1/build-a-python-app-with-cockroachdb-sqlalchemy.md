@@ -18,10 +18,6 @@ We have tested the [psycopg2 driver](http://initd.org/psycopg/docs/) and [SQLAlc
 
 {% include {{page.version.version}}/app/before-you-begin.md %}
 
-{{site.data.alerts.callout_danger}}
-**Upgrading from CockroachDB 2.0 to 2.1?** If you used SQLAlchemy with your 2.0 cluster, you must [upgrade the adapter to the latest release](https://github.com/cockroachdb/sqlalchemy-cockroachdb) before upgrading to CockroachDB 2.1.
-{{site.data.alerts.end}}
-
 {{site.data.alerts.callout_info}}
 The example code on this page uses Python 3.
 {{site.data.alerts.end}}
