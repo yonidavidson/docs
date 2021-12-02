@@ -1,6 +1,7 @@
 - Changefeeds only work on tables with a single [column family](column-families.html) (which is the default for new tables).
 - Changefeeds do not share internal buffers, so each running changefeed will increase total memory usage. To watch multiple tables, we recommend creating a changefeed with a comma-separated list of tables.
 - Many DDL queries (including [`TRUNCATE`](truncate.html) and [`DROP TABLE`](drop-table.html)) will cause errors on a changefeed watching the affected tables. You will need to [start a new changefeed](create-changefeed.html#start-a-new-changefeed-where-another-ended).
+- Changefeeds will fail when there is a [`VIRTUAL` computed column](computed-columns.html) with [`NOT NULL`](not-null.html) present in the target table. [GitHub Tracking Issue](https://github.com/cockroachdb/cockroach/issues/73138)
 - Changefeeds cannot be [backed up](backup.html) or [restored](restore.html).
 - Partial or intermittent sink unavailability may impact changefeed stability; however, [ordering guarantees](stream-data-out-of-cockroachdb-using-changefeeds.html#ordering-guarantees) will still hold for as long as a changefeed [remains active](stream-data-out-of-cockroachdb-using-changefeeds.html#monitor-a-changefeed).
 - Changefeeds cannot be altered. To alter, cancel the changefeed and [create a new one with updated settings from where it left off](create-changefeed.html#start-a-new-changefeed-where-another-ended).

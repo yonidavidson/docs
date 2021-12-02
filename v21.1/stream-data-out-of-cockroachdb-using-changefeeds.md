@@ -150,6 +150,8 @@ The changefeed emits duplicate records 1, 2, and 3 before outputting the records
 [3]	{"id": 3, "likes_treats": true, "name": "Ernie"}
 ~~~
 
+{% include {{ page.version.version }}/cdc/not-null-virtual.md %}
+
 ## Changefeeds on regional by row tables
 
 Changefeeds are supported on [regional by row tables](multiregion-overview.html#regional-by-row-tables). When working with changefeeds on regional by row tables, it is necessary to consider the following:
